@@ -13,6 +13,7 @@ public class Game {
         currentState = GameState.ON;
         score = 0;
         lifeNum = 3;
+        new Board();
     }
 
     public void GameOver() {
