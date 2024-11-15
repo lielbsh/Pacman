@@ -1,4 +1,4 @@
-package com;
+package com.example.PacMan;
 
 public class Game {
     int lifeNum = 3;

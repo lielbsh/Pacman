@@ -1,4 +1,4 @@
-package com;
+package com.example.PacMan;
 
 public class Board {
     int[][] boardArray = {
