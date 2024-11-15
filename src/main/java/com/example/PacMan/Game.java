@@ -1,7 +1,6 @@
 package com.example.PacMan;
 
 public class Game {
-    ;
     GameState currentState = GameState.OFF;
 
     public enum GameState {

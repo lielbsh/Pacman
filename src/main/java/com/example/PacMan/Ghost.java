@@ -1,14 +1,18 @@
 package com.example.PacMan;
 
 public class Ghost extends Figure {
-<<<<<<< HEAD
+
+    @Override
+    protected void setCoordinates(int[] coordinates) {
+        super.setCoordinates(coordinates);
+    }
+
+    @Override
+    protected void setNextStep(char nextStepDir) {
+    }
+
     @Override
     public boolean die() {
-=======
-    
-    @Override
-    public boolean die(){
->>>>>>> 2567ed000bef3cadc42b6f292439f87b515edd73
         return false;
     };
 }
