@@ -15,12 +15,12 @@ public abstract class Figure {
     protected boolean IsPredetor;
     protected String PhotoHref;
     protected  int[] coordinates;
-    protected String nextStep;
+    protected int[] nextStep;
     protected void setCoordinates(int[] coordinates){
        this.coordinates=coordinates;
     };
-    protected void setNextStep(String nextStep){
-    this.nextStep=nextStep;
+    protected void setNextStep(String nextStepString){
+    this.nextStep=NEXT_STEP_OPTIONS.get(nextStepString);
     };
     
     public abstract  boolean die();
