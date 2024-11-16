@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PacManApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PacManApplication.class, args);
+		System.out.println("START");
+		new Game();
 	}
 
 }
