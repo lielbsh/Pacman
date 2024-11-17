@@ -23,7 +23,7 @@ public class Pacman extends Figure {
     }
 
     public boolean collectCoins(int[][] board) {
-
+        return false;
     }
 
 }
