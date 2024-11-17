@@ -7,15 +7,9 @@ import java.util.Random;
 public class Ghost extends Figure {
     List<Character> directionsList = new ArrayList<>(NEXT_STEP_OPTIONS.keySet()); // for dummy ghost
     Random random = new Random();
-    char direction = 'S';
 
     public Ghost() {
         this.coordinates = new int[] { 7, 7 };
-    }
-
-    @Override
-    protected void setNextStep(int[][] boardArray) {
-        this.nextStep = NEXT_STEP_OPTIONS.get(direction); // set the next step
     }
 
     @Override
@@ -39,34 +33,44 @@ public class Ghost extends Figure {
     // }
 
     // Changes the direction to chase the pacman
-    public void setSmartDirection(int[][] boardArray, int[] pacmanCoordinates) {
+    @Override
+    public void setDirection(int[][] boardArray, int[] pacmanCoordinates) {
         direction = 'S'; // initilaize direction
         int randomNum = random.nextInt(2);
+
+        // First attempt: prioritize horizontal or vertical based on random number
         if (randomNum == 0) {
-            // Choose horizontal direction first
-            chaseHorizontal(boardArray, pacmanCoordinates);
+            if (!chaseHorizontal(boardArray, pacmanCoordinates)) {
+                chaseVertical(boardArray, pacmanCoordinates); // Fallback to vertical
+            }
         } else {
-            // If horizontal direction is blocked, choose vertical
-            chaseVertical(boardArray, pacmanCoordinates);
+            if (!chaseVertical(boardArray, pacmanCoordinates)) {
+                chaseHorizontal(boardArray, pacmanCoordinates); // Fallback to horizontal
+            }
         }
 
-        this.nextStep = NEXT_STEP_OPTIONS.get(direction);
         System.out.println("direction:" + direction);
     }
 
-    private void chaseHorizontal(int[][] boardArray, int[] pacmanCoordinates) {
+    private boolean chaseHorizontal(int[][] boardArray, int[] pacmanCoordinates) {
         if (coordinates[0] < pacmanCoordinates[0] && isMovePossible('R', boardArray)) {
             direction = 'R';
+            return true;
         } else if (coordinates[0] > pacmanCoordinates[0] && isMovePossible('L', boardArray)) {
             direction = 'L';
+            return true;
         }
+        return false;
     }
 
-    private void chaseVertical(int[][] boardArray, int[] pacmanCoordinates) {
+    private boolean chaseVertical(int[][] boardArray, int[] pacmanCoordinates) {
         if (coordinates[1] < pacmanCoordinates[1] && isMovePossible('D', boardArray)) {
             direction = 'D';
+            return true;
         } else if (coordinates[1] > pacmanCoordinates[1] && isMovePossible('U', boardArray)) {
             direction = 'U';
+            return true;
         }
+        return false;
     }
 }

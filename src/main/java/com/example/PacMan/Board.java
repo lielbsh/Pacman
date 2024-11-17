@@ -7,17 +7,15 @@ import java.util.TimerTask;
 public class Board {
     int lifeNum = 3;
     int score = 0;
-    char pacmanMove = 'R';
-    int[] pacmanCoordinates = { 5, 4 };
     int[][] boardArray = {
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
             { 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1 },
             { 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1 },
             { 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1 },
-            { 1, 2, 1, 2, 1, 8, 1, 1, 1, 0, 1, 2, 1, 2, 1 },
+            { 1, 2, 1, 2, 1, 0, 1, 1, 1, 0, 1, 2, 1, 2, 1 },
             { 1, 2, 2, 2, 0, 0, 0, 1, 0, 0, 0, 2, 2, 2, 1 },
             { 1, 1, 1, 2, 1, 1, 0, 0, 0, 1, 1, 2, 1, 1, 1 },
-            { 1, 0, 0, 2, 0, 0, 0, 48, 0, 0, 0, 2, 0, 0, 1 },
+            { 1, 0, 0, 10, 0, 0, 0, 48, 0, 0, 0, 2, 0, 0, 1 },
             { 1, 1, 1, 2, 1, 0, 0, 0, 0, 0, 1, 2, 1, 1, 1 },
             { 1, 2, 2, 2, 2, 2, 1, 1, 1, 2, 2, 2, 2, 2, 1 },
             { 1, 1, 2, 1, 1, 2, 2, 2, 2, 2, 1, 1, 2, 1, 1 },
@@ -26,8 +24,13 @@ public class Board {
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
     };
     Timer timer;
-    long timeInterval = 1000;
+    long timeInterval = 2000;
     Ghost[] ghosts = { new Ghost(), new Ghost(), new Ghost() };
+    Pacman pacman = new Pacman();
+    char[] path = {
+            'U', 'U', 'U', 'U', 'R', 'R', 'R', 'R', 'U', 'U', 'L', 'L', 'L', 'L', 'L', 'L', 'D', 'D', 'D', 'D',
+            'R', 'R'
+    };
 
     public Board() {
         this.score = 0;
@@ -45,22 +48,26 @@ public class Board {
             // Add logic to update game board
 
             // First ghost
-            ghosts[0].setSmartDirection(boardArray, pacmanCoordinates); // Render diraction & Changes the nextStep
+            ghosts[0].setDirection(boardArray, pacman.coordinates); // Render diraction & Changes the nextStep
             updateBoardValue(ghosts[0]); // Delete value from the old location on the board
 
-            if (score > 3) {
-                ghosts[1].setSmartDirection(boardArray, pacmanCoordinates);
+            if (score > 2) {
+                ghosts[1].setDirection(boardArray, pacman.coordinates);
                 updateBoardValue(ghosts[1]);
             }
 
-            if (score > 6) {
-                ghosts[2].setSmartDirection(boardArray, pacmanCoordinates);
+            if (score > 4) {
+                ghosts[2].setDirection(boardArray, pacman.coordinates);
                 updateBoardValue(ghosts[2]);
             }
 
             score += 1;
-            System.out.println(score);
+            System.out.println("score:" + score);
 
+            // Pacman Logic
+            char newDirection = path[score - 1];
+            pacman.setDirection(newDirection, boardArray);
+            updateBoardValue(pacman);
         }
     };
 
@@ -79,14 +86,19 @@ public class Board {
 
     private void updateBoardValue(Pacman pacman) {
         int[] oldCor = pacman.coordinates;
-        System.out.println(Arrays.toString(oldCor));
+        System.out.println("pacman" + Arrays.toString(oldCor));
         boardArray[oldCor[1]][oldCor[0]] -= 8;
 
         // Set the new coordinates & update the board
         pacman.setCoordinates();
         int[] newCor = pacman.coordinates;
-        System.out.println(Arrays.toString(newCor));
-        boardArray[newCor[1]][newCor[0]] += 16;
+        System.out.println("pacman" + Arrays.toString(newCor));
+        boardArray[newCor[1]][newCor[0]] += 8;
+    }
+
+    public char getPacmanDirection(Pacman pacman) {
+        char newDirection = 'S';
+        return newDirection;
     }
 
     public static String boardToString(int[][] board) {
