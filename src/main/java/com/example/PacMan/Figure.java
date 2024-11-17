@@ -46,6 +46,9 @@ public abstract class Figure {
         return true;
     }
 
+    protected void setPredetor() {
+    };
+
     public abstract boolean die();
 
 }

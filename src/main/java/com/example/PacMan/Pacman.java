@@ -4,6 +4,7 @@ public class Pacman extends Figure {
 
     public Pacman() {
         this.coordinates = new int[] { 3, 7 };
+        this.IsPredetor = false;
     }
 
     @Override
@@ -22,8 +23,9 @@ public class Pacman extends Figure {
         throw new UnsupportedOperationException("Unimplemented method 'die'");
     }
 
-    public boolean collectCoins(int[][] board) {
-        return false;
+    @Override
+    protected void setPredetor() {
+        IsPredetor = true;
     }
 
 }

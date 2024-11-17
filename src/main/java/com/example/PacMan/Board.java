@@ -5,6 +5,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Board {
+    Game game; // Reference to the Game class
     int lifeNum = 3;
     int score = 0;
     int[][] boardArray = {
@@ -45,7 +46,11 @@ public class Board {
             System.out.println("Updating the board...");
             System.out.println(boardToString(boardArray));
 
-            // Add logic to update game board
+            // Update game logic each tick
+
+            if (lifeNum <= 0) {
+                game.gameOver();
+            }
 
             // First ghost
             ghosts[0].setDirection(boardArray, pacman.coordinates); // Render diraction & Changes the nextStep
@@ -64,10 +69,11 @@ public class Board {
             score += 1;
             System.out.println("score:" + score);
 
-            // Pacman Logic
+            // Pac-Man Logic
             char newDirection = path[score - 1];
             pacman.setDirection(newDirection, boardArray);
             updateBoardValue(pacman);
+            eat(); // Handle interactions
         }
     };
 
@@ -99,6 +105,37 @@ public class Board {
     public char getPacmanDirection(Pacman pacman) {
         char newDirection = 'S';
         return newDirection;
+    }
+
+    private void eat() {
+        int[] coordinates = pacman.coordinates;
+        int x = coordinates[0];
+        int y = coordinates[1];
+        int boardValue = boardArray[y][x];
+
+        if ((boardValue & 2) != 0) {
+            // Collect the coin
+            boardArray[y][x] -= 2;
+            score += 1;
+        }
+
+        if ((boardValue & 3) != 0) {
+            // Collect the food
+            boardArray[y][x] -= 4;
+            score += 10;
+        }
+
+        if (pacman.IsPredetor & (boardValue & 4) != 0) {
+            // Eat the ghost
+            boardArray[y][x] -= 16;
+            score += 100;
+        }
+
+        // Check if there's a power-up for Pacman to become a predato
+        if ((boardValue & 5) != 0) {
+            pacman.setPredetor(); // Make Pacman a predator
+            System.out.println("pacman is preditor");
+        }
     }
 
     public static String boardToString(int[][] board) {

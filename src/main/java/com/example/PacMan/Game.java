@@ -2,17 +2,18 @@ package com.example.PacMan;
 
 public class Game {
     GameState currentState = GameState.OFF;
+    Board board; // Reference to the board
 
     public enum GameState {
         ON, OFF, WIN, LOSS
     };
 
     public Game() {
-        currentState = GameState.ON;
-        new Board();
+        this.currentState = GameState.ON;
+        this.board = new Board();
     }
 
-    public void GameOver() {
+    public void gameOver() {
         currentState = GameState.LOSS;
     }
 }
