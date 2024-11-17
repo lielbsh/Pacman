@@ -54,9 +54,11 @@ This is a Java-based PacMan game project that includes multiple classes represen
 - **Purpose**: Represents a ghost character that moves around the board and interacts with PacMan.
 - **Methods**:
   - `ghost()`: Initializes or updates the ghost's behavior.
-  - `move()`: Determines and executes the ghost's movement on the board.
+  - `setSmartDirection()`: Determines the ghost's movement on the board and changes the nexstStep.
+  - `chaseHorizontal` and `chaseVertical`: helper's functions.
 - **Attributes**:
   - `predator` - Boolean indicating if the ghost is in predator mode (i.e., can harm PacMan).
+  - `direction` - char
 
 ---
 
@@ -76,7 +78,7 @@ This is a Java-based PacMan game project that includes multiple classes represen
 - **Purpose**: Abstract class for shared behavior between `Ghost` and `Pacman`.
 - **Methods**:
   - `setCordinates()`: Abstract method defining movement, implemented in subclasses.
-  - `getCordinates`
+  - `isMovePossible()`: boolean
   - `predator()`: Determines if the figure acts as a predator in the current state.
   - `die`
 - **Attributes**:

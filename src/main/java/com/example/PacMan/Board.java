@@ -8,6 +8,7 @@ public class Board {
     int lifeNum = 3;
     int score = 0;
     char pacmanMove = 'R';
+    int[] pacmanCoordinates = { 5, 8 };
     int[][] boardArray = {
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
             { 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1 },
@@ -17,7 +18,7 @@ public class Board {
             { 1, 2, 2, 2, 0, 0, 0, 1, 0, 0, 0, 2, 2, 2, 1 },
             { 1, 1, 1, 2, 1, 1, 0, 0, 0, 1, 1, 2, 1, 1, 1 },
             { 1, 0, 0, 2, 0, 0, 0, 16, 0, 0, 0, 2, 0, 0, 1 },
-            { 1, 1, 1, 2, 1, 0, 0, 0, 0, 0, 1, 2, 1, 1, 1 },
+            { 1, 1, 1, 2, 1, 8, 0, 0, 0, 0, 1, 2, 1, 1, 1 },
             { 1, 2, 2, 2, 2, 2, 1, 1, 1, 2, 2, 2, 2, 2, 1 },
             { 1, 1, 2, 1, 1, 2, 2, 2, 2, 2, 1, 1, 2, 1, 1 },
             { 1, 1, 2, 2, 1, 2, 1, 1, 1, 2, 1, 2, 2, 1, 1 },
@@ -27,9 +28,7 @@ public class Board {
     Timer timer;
     long timeInterval = 1000;
     Ghost ghost1 = new Ghost();
-    Ghost ghost2 = new Ghost();
-    Ghost ghost3 = new Ghost();
-    Pacman pacman = new Pacman();
+    Ghost ghost2, ghost3 = new Ghost();
 
     public Board() {
         this.score = 0;
@@ -45,8 +44,9 @@ public class Board {
             System.out.println(boardToString(boardArray));
             // Add logic to update game board
 
-            // Changes the nextStep
-            ghost1.setNextStep(boardArray);
+            // Render a diraction & Changes the nextStep
+            ghost1.setSmartDirection(boardArray, pacmanCoordinates);
+            // ghost1.setNextStep(boardArray);
 
             // Delete value from the old location on the board
             int[] oldCor = ghost1.coordinates;
