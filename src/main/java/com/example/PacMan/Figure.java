@@ -31,11 +31,11 @@ public abstract class Figure {
                 this.coordinates[1] + NEXT_STEP_OPTIONS.get(diraction)[1] };
         System.out.println(coordinates[0]);
         System.out.println(coordinates[1]);
-        System.out.println(diraction);
         if (boardArray[nextCoordinates[1]][nextCoordinates[0]] == 1) {
             return false;
         }
 
+        System.out.println(diraction);
         return true;
     }
 
