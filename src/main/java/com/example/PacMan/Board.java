@@ -10,7 +10,7 @@ public class Board {
     int step = 0; // for moving the pacman
     int[][] boardArray = {
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-            { 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1 },
+            { 1, 128, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 128, 1 },
             { 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1 },
             { 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1 },
             { 1, 2, 1, 2, 1, 0, 1, 1, 1, 0, 1, 2, 1, 2, 1 },
@@ -21,7 +21,7 @@ public class Board {
             { 1, 2, 2, 2, 2, 2, 1, 1, 1, 2, 2, 2, 2, 2, 1 },
             { 1, 1, 2, 1, 1, 2, 2, 2, 2, 2, 1, 1, 2, 1, 1 },
             { 1, 1, 2, 2, 1, 2, 1, 1, 1, 2, 1, 2, 2, 1, 1 },
-            { 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1 },
+            { 1, 1, 1, 2, 2, 2, 2, 128, 2, 2, 2, 2, 1, 1, 1 },
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
     };
     Timer timer;
@@ -58,12 +58,12 @@ public class Board {
             ghosts[0].setDirection(boardArray, pacman.coordinates); // Render diraction & Changes the nextStep
             updateBoardValue(ghosts[0]); // Delete value from the old location on the board
 
-            if (score > 2) {
+            if (step > 2) {
                 ghosts[1].setDirection(boardArray, pacman.coordinates);
                 updateBoardValue(ghosts[1]);
             }
 
-            if (score > 5) {
+            if (step > 5) {
                 ghosts[2].setDirection(boardArray, pacman.coordinates);
                 updateBoardValue(ghosts[2]);
             }
@@ -116,21 +116,21 @@ public class Board {
         if ((boardValue & 2) != 0) {
             // Collect the coin
             boardArray[y][x] -= 2;
-            score += 1;
+            score += 10;
             System.out.print("| Coin collected");
         }
 
         if ((boardValue & 4) != 0) {
             // Collect the food
             boardArray[y][x] -= 4;
-            score += 10;
+            score += 300;
             System.out.print(" | food eaten");
         }
 
         if (pacman.IsPredetor & (boardValue & 24) != 0) {
             // Eat the ghost
             boardArray[y][x] -= 16;
-            score += 100;
+            score += 200;
             System.out.println("Eat ghost");
         }
 
@@ -147,7 +147,7 @@ public class Board {
             boardArray[y][x] -= 8;
             boardArray[7][2] += 8;
             // Update the score (-10 points)
-            score = Math.max(score - 10, 0);
+            score = Math.max(score - 100, 0);
             // Kill pacmen
             pacman.die();
             step = -1;
