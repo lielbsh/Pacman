@@ -7,14 +7,16 @@ import java.util.Random;
 public class Ghost extends Figure {
     List<Character> directionsList = new ArrayList<>(NEXT_STEP_OPTIONS.keySet()); // for dummy ghost
     Random random = new Random();
+    protected int boardIndex; // e.g 16 or 32 or 64
 
-    public Ghost() {
+    public Ghost(int index) { // e.g 1 or 2 or 3
         this.coordinates = new int[] { 7, 7 };
+        this.boardIndex = (int) Math.pow(2, index + 3);
     }
 
     @Override
-    public boolean die() {
-        return false;
+    public void die() {
+        return;
     };
 
     // Helper function for random direction
@@ -49,7 +51,7 @@ public class Ghost extends Figure {
             }
         }
 
-        System.out.println("direction:" + direction);
+        System.out.print("| direction:" + direction);
     }
 
     private boolean chaseHorizontal(int[][] boardArray, int[] pacmanCoordinates) {

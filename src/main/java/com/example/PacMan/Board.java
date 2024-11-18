@@ -6,8 +6,8 @@ import java.util.TimerTask;
 
 public class Board {
     Game game; // Reference to the Game class
-    int lifeNum = 3;
     int score = 0;
+    int step = 0; // for moving the pacman
     int[][] boardArray = {
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
             { 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1 },
@@ -16,7 +16,7 @@ public class Board {
             { 1, 2, 1, 2, 1, 0, 1, 1, 1, 0, 1, 2, 1, 2, 1 },
             { 1, 2, 2, 2, 0, 0, 0, 1, 0, 0, 0, 2, 2, 2, 1 },
             { 1, 1, 1, 2, 1, 1, 0, 0, 0, 1, 1, 2, 1, 1, 1 },
-            { 1, 0, 0, 10, 0, 0, 0, 48, 0, 0, 0, 2, 0, 0, 1 },
+            { 1, 0, 8, 2, 0, 0, 0, 112, 0, 0, 0, 2, 0, 0, 1 },
             { 1, 1, 1, 2, 1, 0, 0, 0, 0, 0, 1, 2, 1, 1, 1 },
             { 1, 2, 2, 2, 2, 2, 1, 1, 1, 2, 2, 2, 2, 2, 1 },
             { 1, 1, 2, 1, 1, 2, 2, 2, 2, 2, 1, 1, 2, 1, 1 },
@@ -26,16 +26,15 @@ public class Board {
     };
     Timer timer;
     long timeInterval = 2000;
-    Ghost[] ghosts = { new Ghost(), new Ghost(), new Ghost() };
+    Ghost[] ghosts = { new Ghost(1), new Ghost(2), new Ghost(3) };
     Pacman pacman = new Pacman();
     char[] path = {
-            'U', 'U', 'U', 'U', 'R', 'R', 'R', 'R', 'U', 'U', 'L', 'L', 'L', 'L', 'L', 'L', 'D', 'D', 'D', 'D',
-            'R', 'R'
+            'R', 'U', 'U', 'U', 'U', 'R', 'S', 'R', 'R', 'R', 'U', 'U', 'S', 'S', 'L', 'L', 'L', 'L', 'L', 'L', 'D',
+            'D', 'D', 'D', 'R', 'R', 'S', 'S'
     };
 
     public Board() {
         this.score = 0;
-        this.lifeNum = 3;
         this.timer = new Timer();
         timer.scheduleAtFixedRate(updateBoard, 0, timeInterval);
     }
@@ -43,12 +42,15 @@ public class Board {
     TimerTask updateBoard = new TimerTask() {
         @Override
         public void run() {
+            if (pacman.die)
+                return;
+
             System.out.println("Updating the board...");
             System.out.println(boardToString(boardArray));
 
             // Update game logic each tick
 
-            if (lifeNum <= 0) {
+            if (pacman.lifeNum <= 0) {
                 game.gameOver();
             }
 
@@ -61,50 +63,48 @@ public class Board {
                 updateBoardValue(ghosts[1]);
             }
 
-            if (score > 4) {
+            if (score > 5) {
                 ghosts[2].setDirection(boardArray, pacman.coordinates);
                 updateBoardValue(ghosts[2]);
             }
 
-            score += 1;
-            System.out.println("score:" + score);
-
             // Pac-Man Logic
-            char newDirection = path[score - 1];
+            char newDirection = path[step];
             pacman.setDirection(newDirection, boardArray);
             updateBoardValue(pacman);
             eat(); // Handle interactions
+
+            System.out.print(" | score:" + score);
+
+            step += 1;
+            System.out.println(" | step:" + path[step]);
         }
     };
 
     private void updateBoardValue(Ghost ghost) {
+        int boardIndex = ghost.boardIndex;
+        System.out.print(" | ghostInx:" + Integer.toString(boardIndex));
+
         // Delete value from the old location on the board
         int[] oldCor = ghost.coordinates;
-        System.out.println(Arrays.toString(oldCor));
-        boardArray[oldCor[1]][oldCor[0]] -= 16;
+        boardArray[oldCor[1]][oldCor[0]] -= boardIndex;
 
         // Set the new coordinates & update the board
         ghost.setCoordinates();
         int[] newCor = ghost.coordinates;
-        System.out.println(Arrays.toString(newCor));
-        boardArray[newCor[1]][newCor[0]] += 16;
+        System.out.println(" | " + Arrays.toString(newCor));
+        boardArray[newCor[1]][newCor[0]] += boardIndex;
     }
 
     private void updateBoardValue(Pacman pacman) {
         int[] oldCor = pacman.coordinates;
-        System.out.println("pacman" + Arrays.toString(oldCor));
         boardArray[oldCor[1]][oldCor[0]] -= 8;
 
         // Set the new coordinates & update the board
         pacman.setCoordinates();
         int[] newCor = pacman.coordinates;
-        System.out.println("pacman" + Arrays.toString(newCor));
+        System.out.println(" | " + Arrays.toString(newCor));
         boardArray[newCor[1]][newCor[0]] += 8;
-    }
-
-    public char getPacmanDirection(Pacman pacman) {
-        char newDirection = 'S';
-        return newDirection;
     }
 
     private void eat() {
@@ -117,24 +117,41 @@ public class Board {
             // Collect the coin
             boardArray[y][x] -= 2;
             score += 1;
+            System.out.print("| Coin collected");
         }
 
-        if ((boardValue & 3) != 0) {
+        if ((boardValue & 4) != 0) {
             // Collect the food
             boardArray[y][x] -= 4;
             score += 10;
+            System.out.print(" | food eaten");
         }
 
-        if (pacman.IsPredetor & (boardValue & 4) != 0) {
+        if (pacman.IsPredetor & (boardValue & 24) != 0) {
             // Eat the ghost
             boardArray[y][x] -= 16;
             score += 100;
+            System.out.println("Eat ghost");
         }
 
         // Check if there's a power-up for Pacman to become a predato
-        if ((boardValue & 5) != 0) {
+        if ((boardValue & 128) != 0) {
             pacman.setPredetor(); // Make Pacman a predator
             System.out.println("pacman is preditor");
+        }
+
+        // check if pacman died
+        if ((boardValue & 8) != 0 && ((boardValue & 16) != 0 || (boardValue & 32) != 0 || (boardValue & 64) != 0)) {
+            // Move the Pacman to starting point
+            System.out.println("Pacman died at coordinates:" + Arrays.toString(coordinates));
+            boardArray[y][x] -= 8;
+            boardArray[7][2] += 8;
+            // Update the score (-10 points)
+            score = Math.max(score - 10, 0);
+            // Kill pacmen
+            pacman.die();
+            step = -1;
+            System.out.println("********* Pacman died *********");
         }
     }
 

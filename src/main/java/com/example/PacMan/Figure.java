@@ -12,7 +12,7 @@ public abstract class Figure {
 
     protected int index;
     protected boolean IsPredetor;
-    protected String PhotoHref;
+    boolean die = false;
     protected int[] coordinates;
     protected char direction = 'S';
     // protected int[] nextStep = { 0, 0 };
@@ -31,6 +31,8 @@ public abstract class Figure {
     };
 
     protected boolean isMovePossible(char direction, int[][] boardArray) {
+        if (die)
+            return false;
         // Calculate the next coordinates
         int[] nextCoordinates = {
                 this.coordinates[0] + NEXT_STEP_OPTIONS.get(direction)[0],
@@ -49,6 +51,6 @@ public abstract class Figure {
     protected void setPredetor() {
     };
 
-    public abstract boolean die();
+    public abstract void die();
 
 }

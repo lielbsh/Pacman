@@ -40,7 +40,10 @@ This is a Java-based PacMan game project that includes multiple classes represen
     - `2` - Coin
     - `4` - Food
     - `8` - PacMan
-    - `16` - Ghost
+    - `16` - Ghost1
+    - `32` - Ghost2
+    - `64` - Ghost3
+    - `128` - power-up coin
   - `nextMove` - Maps PacMan's next move (e.g., `'R'` for Right, `'L'` for Left).
   - `ghost1`, `ghost2`, `ghost3` - Instances of the `Ghost` class.
   - `pacman` - An instance of the `Pacman` class.
