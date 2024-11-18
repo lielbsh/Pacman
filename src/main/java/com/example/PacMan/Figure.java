@@ -10,7 +10,7 @@ public abstract class Figure {
             'R', new int[] { 1, 0 },
             'S', new int[] { 0, 0 });
 
-    protected int index;
+    protected int boardIndex; // e.g 8 or 16 or 32 or 64
     protected boolean IsPredetor;
     boolean die = false;
     protected int[] coordinates;
@@ -22,6 +22,12 @@ public abstract class Figure {
                 this.coordinates[1] + NEXT_STEP_OPTIONS.get(direction)[1] };
 
         this.coordinates = nextCoordinates;
+    };
+
+    protected void setCoordinates(int[] coordinates) {
+        int[] nextCoordinates = { coordinates[0], coordinates[1] };
+        this.coordinates = nextCoordinates;
+        this.direction = 'S';
     };
 
     protected void setDirection(char newDirection, int[][] boardArray) {
