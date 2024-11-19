@@ -44,6 +44,11 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-websocket</artifactId>
 		</dependency>
+		 <dependency>
+        	<groupId>org.json</groupId>
+        	<artifactId>json</artifactId>
+    		<version>20210307</version>  <!-- Use the latest version if needed -->
+    	</dependency>
 	</dependencies>
 
 	<build>

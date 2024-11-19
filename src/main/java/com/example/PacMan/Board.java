@@ -5,12 +5,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Board {
+    ThingWebSocketHandler  webSocketHandler;
     Game game; // Reference to the Game class
     int score = 0;
     int step = 0; // for moving the pacman
     int[][] boardArray = {
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-            { 1, 2, 2, 2, 2, 2, 128, 2, 2, 2, 2, 2, 2, 128, 1 },
+            { 1, 128, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 128, 1 },
             { 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1 },
             { 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1 },
             { 1, 2, 1, 2, 1, 0, 1, 1, 1, 0, 1, 2, 1, 2, 1 },
@@ -29,16 +30,19 @@ public class Board {
     Ghost[] ghosts = { new Ghost(1), new Ghost(2), new Ghost(3) };
     Pacman pacman = new Pacman();
     char[] path = {
-            'R', 'U', 'U', 'U', 'U', 'R', 'R', 'R', 'R', 'U', 'U', 'S', 'L', 'L', 'L', 'L', 'L', 'L', 'D',
-            'D', 'D', 'D', 'R', 'R', 'S', 'S', 'S', 'S'
+            'R', 'U', 'U', 'U', 'U', 'R', 'S', 'R', 'R', 'R', 'U', 'U', 'S', 'S', 'L', 'L', 'L', 'L', 'L', 'L', 'D',
+            'D', 'D', 'D', 'R', 'R', 'S', 'S'
     };
 
-    public Board() {
+    public Board(ThingWebSocketHandler  webSocketHandler) {
         this.score = 0;
         this.timer = new Timer();
         timer.scheduleAtFixedRate(updateBoard, 0, timeInterval);
+        this.webSocketHandler=webSocketHandler;
     }
-
+    public void updateDirection(char direction){
+        pacman.setDirection(direction,boardArray);
+    }
     TimerTask updateBoard = new TimerTask() {
         @Override
         public void run() {
