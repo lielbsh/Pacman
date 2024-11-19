@@ -1,11 +1,11 @@
 package com.example.PacMan;
+import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import org.json.JSONObject;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
-
-import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class ThingWebSocketHandler extends TextWebSocketHandler {
@@ -51,7 +51,7 @@ public class ThingWebSocketHandler extends TextWebSocketHandler {
      * Function to send a Map as JSON to all connected clients.
      * @param dataMap The Map containing the data to send to the frontend.
      */
-    public void sendDataToClients(Map<String, Object> data) {
+    public void sendDataToClients(Map<String, String> data) {
         try {
             // Create a JSONObject from the Map
             JSONObject jsonObject = new JSONObject(data);

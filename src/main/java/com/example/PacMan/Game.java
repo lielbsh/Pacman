@@ -1,5 +1,7 @@
 package com.example.PacMan;
 
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 import com.example.PacMan.Game.GameState;
 
 public class Game {
@@ -17,10 +19,22 @@ public class Game {
         this.currentState = GameState.ON;
         // Initialize the WebSocket handler
         this.webSocketHandler = new ThingWebSocketHandler(this);
+        
 
         // Initialize the Board and pass the WebSocket handler to it
         this.board = new Board(webSocketHandler);
+        
 
+    }
+    public ThingWebSocketHandler getThingWebSocketHandler() {
+        return webSocketHandler;
+    }
+    public void startWebSocketServer() {
+        // Manually start Spring and pass your handler to the WebSocketConfig
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        context.registerBean(WebSocketConfig.class, 
+            () -> new WebSocketConfig(webSocketHandler));
+        context.refresh();
     }
 
     

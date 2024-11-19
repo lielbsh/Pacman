@@ -1,8 +1,11 @@
 package com.example.PacMan;
 
+import java.lang.classfile.constantpool.PackageEntry;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+
 
 public class Board {
     ThingWebSocketHandler  webSocketHandler;
@@ -40,13 +43,42 @@ public class Board {
         timer.scheduleAtFixedRate(updateBoard, 0, timeInterval);
         this.webSocketHandler=webSocketHandler;
     }
+    
     public void updateDirection(char direction){
         pacman.setDirection(direction,boardArray);
     }
     TimerTask updateBoard = new TimerTask() {
         @Override
         public void run() {
-            if (pacman.die)
+            handlerun();
+             Map<String, String> data = Map.of(
+            "boardArray", arrayToString(boardArray),
+            "score", String.valueOf(score),
+            "lives",String.valueOf(pacman.lifeNum),
+            "isLive", String.valueOf(pacman.die),
+            "isPredator",String.valueOf(pacman.IsPredetor),
+            "status","started"
+             );
+            webSocketHandler.sendDataToClients(data);
+        }
+    };
+
+    public static String arrayToString(int[][] boardArray) {
+        StringBuilder sb = new StringBuilder();
+        for (int[] row : boardArray) {
+            sb.append("[");
+            for (int cell : row) {
+                sb.append(cell).append(" ");
+            }
+            sb.deleteCharAt(sb.length() - 1); // Remove trailing space
+            sb.append("]\n");
+        }
+        return sb.toString();
+    }
+    
+
+    public  void handlerun(){
+        if (pacman.die)
                 return;
 
             System.out.println("Updating the board...");
@@ -75,7 +107,7 @@ public class Board {
 
             // Pac-Man Logic
             char newDirection = path[step];
-            pacman.setDirection(newDirection, boardArray);
+            // pacman.setDirection(newDirection, boardArray);
             updateBoardValue(pacman);
             eat(); // Handle interactions
 
@@ -83,9 +115,8 @@ public class Board {
 
             step += 1;
             System.out.println(" | step:" + path[step] + "|step num:" + step);
-        }
-    };
-
+        
+    }
     // Method for update the figure location on the board (base on the figure
     // direction)
     private void updateBoardValue(Figure figure) {
