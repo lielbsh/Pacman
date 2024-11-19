@@ -33,12 +33,13 @@ public abstract class Figure {
     protected void setDirection(char newDirection, int[][] boardArray) {
     };
 
-    protected void setDirection(int[][] boardArray, int[] pacmanCoordinates) {
+    protected void setDirection(int[][] boardArray, Pacman pacman) {
     };
 
     protected boolean isMovePossible(char direction, int[][] boardArray) {
         if (die)
             return false;
+
         // Calculate the next coordinates
         int[] nextCoordinates = {
                 this.coordinates[0] + NEXT_STEP_OPTIONS.get(direction)[0],
@@ -57,6 +58,7 @@ public abstract class Figure {
     protected void setPredetor() {
     };
 
-    public abstract void die();
+    protected void die() {
+    };
 
 }

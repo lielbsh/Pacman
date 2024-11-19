@@ -44,6 +44,13 @@ public class Pacman extends Figure {
     @Override
     protected void setPredetor() {
         IsPredetor = true;
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                IsPredetor = false;
+                System.out.println("Pacman is no longer a predator");
+            }
+        }, 10000); // delay of 10 sec
     }
 
 }

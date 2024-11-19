@@ -11,11 +11,33 @@ public class Ghost extends Figure {
     public Ghost(int index) { // e.g 1 or 2 or 3
         this.coordinates = new int[] { 7, 7 };
         this.boardIndex = (int) Math.pow(2, index + 3);
+        this.IsPredetor = true;
     }
 
     @Override
     public void die() {
-        return;
+        System.out.println("ghost died");
+    };
+
+    @Override
+    protected boolean isMovePossible(char direction, int[][] boardArray) {
+        // Call the parent method for general move validation
+        if (!super.isMovePossible(direction, boardArray)) {
+            return false;
+        }
+
+        // Check for the specific condition for Ghost (e.g., value 128)
+        int[] nextCoordinates = {
+                this.coordinates[0] + NEXT_STEP_OPTIONS.get(direction)[0],
+                this.coordinates[1] + NEXT_STEP_OPTIONS.get(direction)[1]
+        };
+
+        int cellValue = boardArray[nextCoordinates[1]][nextCoordinates[0]];
+        if ((cellValue & 128) != 0) {
+            return false;
+        }
+
+        return true;
     };
 
     // Helper function for random direction
@@ -33,43 +55,62 @@ public class Ghost extends Figure {
     // }
     // }
 
-    // Changes the direction to chase the pacman
+    // Changes the direction to chase/run from the pacman
     @Override
-    public void setDirection(int[][] boardArray, int[] pacmanCoordinates) {
+    public void setDirection(int[][] boardArray, Pacman pacman) {
+        int[] pacmanCoordinates = pacman.coordinates;
+        boolean isPredetor = pacman.IsPredetor;
         direction = 'S'; // initilaize direction
         int randomNum = random.nextInt(2);
 
         // First attempt: prioritize horizontal or vertical based on random number
         if (randomNum == 0) {
-            if (!chaseHorizontal(boardArray, pacmanCoordinates)) {
-                chaseVertical(boardArray, pacmanCoordinates); // Fallback to vertical
+            if (!moveHorizontal(boardArray, pacmanCoordinates, isPredetor)) {
+                moveVertical(boardArray, pacmanCoordinates, isPredetor); // Fallback to vertical
             }
         } else {
-            if (!chaseVertical(boardArray, pacmanCoordinates)) {
-                chaseHorizontal(boardArray, pacmanCoordinates); // Fallback to horizontal
+            if (!moveVertical(boardArray, pacmanCoordinates, isPredetor)) {
+                moveHorizontal(boardArray, pacmanCoordinates, isPredetor); // Fallback to horizontal
             }
         }
 
         System.out.print("| direction:" + direction);
     }
 
-    private boolean chaseHorizontal(int[][] boardArray, int[] pacmanCoordinates) {
+    private boolean moveHorizontal(int[][] boardArray, int[] pacmanCoordinates, boolean isPredetor) {
         if (coordinates[0] < pacmanCoordinates[0] && isMovePossible('R', boardArray)) {
-            direction = 'R';
+            if (!isPredetor) {
+                direction = 'R';
+            } else {
+                direction = 'L';
+            }
             return true;
         } else if (coordinates[0] > pacmanCoordinates[0] && isMovePossible('L', boardArray)) {
-            direction = 'L';
+            if (!isPredetor) {
+                direction = 'L';
+            } else {
+                direction = 'R';
+            }
             return true;
         }
         return false;
     }
 
-    private boolean chaseVertical(int[][] boardArray, int[] pacmanCoordinates) {
+    private boolean moveVertical(int[][] boardArray, int[] pacmanCoordinates, boolean isPredetor) {
         if (coordinates[1] < pacmanCoordinates[1] && isMovePossible('D', boardArray)) {
-            direction = 'D';
+            if (!isPredetor) {
+                direction = 'D';
+            } else {
+                direction = 'U';
+            }
             return true;
+
         } else if (coordinates[1] > pacmanCoordinates[1] && isMovePossible('U', boardArray)) {
-            direction = 'U';
+            if (!isPredetor) {
+                direction = 'U';
+            } else {
+                direction = 'D';
+            }
             return true;
         }
         return false;
