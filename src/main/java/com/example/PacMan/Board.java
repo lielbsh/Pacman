@@ -74,37 +74,45 @@ public class Board {
             updateBoardValue(pacman);
             eat(); // Handle interactions
 
-            System.out.print(" | score:" + score);
+            System.out.print(" | score:" + score + " | lifeNum:" + pacman.lifeNum);
 
             step += 1;
-            System.out.println(" | step:" + path[step]);
+            System.out.println(" | step:" + path[step] + "|step num:" + step);
         }
     };
 
-    private void updateBoardValue(Ghost ghost) {
-        int boardIndex = ghost.boardIndex;
-        System.out.print(" | ghostInx:" + Integer.toString(boardIndex));
+    // Method for update the figure location on the board (base on the figure
+    // direction)
+    private void updateBoardValue(Figure figure) {
+        int boardIndex = figure.boardIndex;
+        System.out.print(" | figureInx:" + Integer.toString(boardIndex));
 
         // Delete value from the old location on the board
-        int[] oldCor = ghost.coordinates;
+        int[] oldCor = figure.coordinates;
         boardArray[oldCor[1]][oldCor[0]] -= boardIndex;
 
         // Set the new coordinates & update the board
-        ghost.setCoordinates();
-        int[] newCor = ghost.coordinates;
+        figure.setCoordinates();
+        int[] newCor = figure.coordinates;
         System.out.println(" | " + Arrays.toString(newCor));
         boardArray[newCor[1]][newCor[0]] += boardIndex;
     }
 
-    private void updateBoardValue(Pacman pacman) {
-        int[] oldCor = pacman.coordinates;
-        boardArray[oldCor[1]][oldCor[0]] -= 8;
+    // Method for update figure location on the board (with a specific location
+    // for initialize)
+    private void updateBoardValue(Figure figure, int[] newCoordinates) {
+        int boardIndex = figure.boardIndex;
+        System.out.print(" | ghostInx:" + Integer.toString(boardIndex));
+
+        // Delete value from the old location on the board
+        int[] oldCor = figure.coordinates;
+        boardArray[oldCor[1]][oldCor[0]] -= boardIndex;
 
         // Set the new coordinates & update the board
-        pacman.setCoordinates();
-        int[] newCor = pacman.coordinates;
+        figure.setCoordinates(newCoordinates);
+        int[] newCor = figure.coordinates;
         System.out.println(" | " + Arrays.toString(newCor));
-        boardArray[newCor[1]][newCor[0]] += 8;
+        boardArray[newCor[1]][newCor[0]] += boardIndex;
     }
 
     private void eat() {
@@ -142,12 +150,16 @@ public class Board {
 
         // check if pacman died
         if ((boardValue & 8) != 0 && ((boardValue & 16) != 0 || (boardValue & 32) != 0 || (boardValue & 64) != 0)) {
-            // Move the Pacman to starting point
+
+            // Move Pacman and Ghosts to starting point
             System.out.println("Pacman died at coordinates:" + Arrays.toString(coordinates));
-            boardArray[y][x] -= 8;
-            boardArray[7][2] += 8;
+            updateBoardValue(pacman, new int[] { 2, 7 });
+            for (int i = 0; i < ghosts.length; i++) {
+                updateBoardValue(ghosts[i], new int[] { 7, 7 });
+            }
+
             // Update the score (-10 points)
-            score = Math.max(score - 100, 0);
+            score = Math.max(score - 10, 0);
             // Kill pacmen
             pacman.die();
             step = -1;

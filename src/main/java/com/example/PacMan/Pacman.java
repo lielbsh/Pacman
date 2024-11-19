@@ -11,6 +11,7 @@ public class Pacman extends Figure {
         this.coordinates = new int[] { 2, 7 };
         this.IsPredetor = false;
         this.lifeNum = 3;
+        this.boardIndex = 8;
     }
 
     @Override
@@ -29,7 +30,6 @@ public class Pacman extends Figure {
     public void die() {
         die = true;
         lifeNum -= 1;
-        coordinates = new int[] { 2, 7 };
         System.out.println("new coordinates" + Arrays.toString(this.coordinates));
         direction = 'S';
         new Timer().schedule(new TimerTask() {
