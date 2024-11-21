@@ -105,8 +105,6 @@ public class Board {
         }
 
         // Pac-Man Logic
-        // char newDirection = path[step];
-        // pacman.setDirection(newDirection, boardArray);
         updateBoardValue(pacman); // The Pacman make its move
         eat(); // Handle interactions
 
@@ -197,10 +195,7 @@ public class Board {
             } else { // Pacman die
                 // Move Pacman and Ghosts to starting point
                 System.out.println("Pacman died at coordinates:" + Arrays.toString(coordinates));
-                // updateBoardValue(pacman, new int[] { 2, 7 });
-                // for (Ghost ghost : ghosts) {
-                // updateBoardValue(ghost, new int[] { 7, 7 });
-                // }
+
                 // Update the score (-10 points)
                 score = Math.max(score - 10, 0);
                 // Kill pacmen
