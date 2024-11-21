@@ -78,39 +78,35 @@ public class Ghost extends Figure {
     }
 
     private boolean moveHorizontal(int[][] boardArray, int[] pacmanCoordinates, boolean isPredetor) {
+        char firstDirection='R';
+        char secondDirection='L';
+        if (isPredetor){
+            firstDirection='L';
+            secondDirection='R';
+        }
         if (coordinates[0] < pacmanCoordinates[0] && isMovePossible('R', boardArray)) {
-            if (!isPredetor) {
-                direction = 'R';
-            } else {
-                direction = 'L';
-            }
+            direction=firstDirection;
             return true;
         } else if (coordinates[0] > pacmanCoordinates[0] && isMovePossible('L', boardArray)) {
-            if (!isPredetor) {
-                direction = 'L';
-            } else {
-                direction = 'R';
-            }
+            direction=secondDirection;
             return true;
         }
         return false;
     }
 
     private boolean moveVertical(int[][] boardArray, int[] pacmanCoordinates, boolean isPredetor) {
+        char firstDirection='D';
+        char secondDirection='U';
+        if (isPredetor){
+            firstDirection='U';
+            secondDirection='D';
+        }
         if (coordinates[1] < pacmanCoordinates[1] && isMovePossible('D', boardArray)) {
-            if (!isPredetor) {
-                direction = 'D';
-            } else {
-                direction = 'U';
-            }
+            direction=firstDirection;
             return true;
 
         } else if (coordinates[1] > pacmanCoordinates[1] && isMovePossible('U', boardArray)) {
-            if (!isPredetor) {
-                direction = 'U';
-            } else {
-                direction = 'D';
-            }
+            direction=secondDirection;
             return true;
         }
         return false;
