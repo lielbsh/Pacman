@@ -8,8 +8,7 @@ public class PacManApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PacManApplication.class, args);
 		System.out.println("START");
-		Game game=new Game();
-		game.startWebSocketServer();
+		// new Game();
 	}
 
 }

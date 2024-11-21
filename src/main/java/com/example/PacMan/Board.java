@@ -1,14 +1,9 @@
 package com.example.PacMan;
 
-import java.lang.classfile.constantpool.PackageEntry;
 import java.util.Arrays;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-
 
 public class Board {
-    ThingWebSocketHandler  webSocketHandler;
     Game game; // Reference to the Game class
     int score = 0;
     int step = 0; // for moving the pacman
@@ -28,7 +23,6 @@ public class Board {
             { 1, 1, 1, 2, 2, 2, 2, 128, 2, 2, 2, 2, 1, 1, 1 },
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
     };
-    Timer timer;
     long timeInterval = 2000;
     Ghost[] ghosts = { new Ghost(1), new Ghost(2), new Ghost(3) };
     Pacman pacman = new Pacman();
@@ -37,86 +31,81 @@ public class Board {
             'D', 'D', 'D', 'R', 'R', 'S', 'S'
     };
 
-    public Board(ThingWebSocketHandler  webSocketHandler) {
+    public Board() {
         this.score = 0;
-        this.timer = new Timer();
-        timer.scheduleAtFixedRate(updateBoard, 0, timeInterval);
-        this.webSocketHandler=webSocketHandler;
     }
-    
-    public void updateDirection(char direction){
-        pacman.setDirection(direction,boardArray);
+
+    public void updateDirection(char direction) {
+        System.out.println("direction from board" + direction);
+        pacman.setDirection(direction, boardArray);
     }
-    TimerTask updateBoard = new TimerTask() {
-        @Override
-        public void run() {
-            handlerun();
-             Map<String, String> data = Map.of(
-            "boardArray", arrayToString(boardArray),
-            "score", String.valueOf(score),
-            "lives",String.valueOf(pacman.lifeNum),
-            "isLive", String.valueOf(pacman.die),
-            "isPredator",String.valueOf(pacman.IsPredetor),
-            "status","started"
-             );
-            webSocketHandler.sendDataToClients(data);
-        }
-    };
+
+    public Map<String, String> getData() {
+        Map<String, String> data = Map.of(
+                "boardArray", arrayToString(boardArray),
+                "score", String.valueOf(score),
+                "lives", String.valueOf(pacman.lifeNum),
+                "die", String.valueOf(pacman.die),
+                "isPredator", String.valueOf(pacman.IsPredetor),
+                "status", "started");
+        return data;
+    }
 
     public static String arrayToString(int[][] boardArray) {
         StringBuilder sb = new StringBuilder();
+        sb.append("[");
         for (int[] row : boardArray) {
             sb.append("[");
             for (int cell : row) {
-                sb.append(cell).append(" ");
+                sb.append(cell).append(",");
             }
             sb.deleteCharAt(sb.length() - 1); // Remove trailing space
-            sb.append("]\n");
+            sb.append("],");
         }
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append("]");
         return sb.toString();
     }
-    
 
-    public  void handlerun(){
+    public void handlerun() {
         if (pacman.die)
-                return;
+            return;
 
-            System.out.println("Updating the board...");
-            System.out.println(boardToString(boardArray));
+        System.out.println("Updating the board...");
+        System.out.println(boardToString(boardArray));
 
-            // Update game logic each tick
+        // Update game logic each tick
 
-            if (pacman.lifeNum <= 0) {
-                game.gameOver();
-                cancelTimer();
-            }
+        if (pacman.lifeNum <= 0) {
+            game.gameOver();
+        }
 
-            // First ghost
-            ghosts[0].setDirection(boardArray, pacman); // Render diraction & Changes the nextStep
-            updateBoardValue(ghosts[0]); // Delete value from the old location on the board
+        // First ghost
+        ghosts[0].setDirection(boardArray, pacman); // Render diraction & Changes the nextStep
+        updateBoardValue(ghosts[0]); // Delete value from the old location on the board
 
-            if (step > 2) {
-                ghosts[1].setDirection(boardArray, pacman);
-                updateBoardValue(ghosts[1]);
-            }
+        if (step > 2) {
+            ghosts[1].setDirection(boardArray, pacman);
+            updateBoardValue(ghosts[1]);
+        }
 
-            if (step > 5) {
-                ghosts[2].setDirection(boardArray, pacman);
-                updateBoardValue(ghosts[2]);
-            }
+        if (step > 5) {
+            ghosts[2].setDirection(boardArray, pacman);
+            updateBoardValue(ghosts[2]);
+        }
 
-            // Pac-Man Logic
-            char newDirection = path[step];
-            // pacman.setDirection(newDirection, boardArray);
-            updateBoardValue(pacman);
-            eat(); // Handle interactions
+        // Pac-Man Logic
+        // char newDirection = path[step];
+        // pacman.setDirection(newDirection, boardArray);
+        updateBoardValue(pacman); // The Pacman make its move
+        eat(); // Handle interactions
 
-            System.out.print(" | score:" + score + " | lifeNum:" + pacman.lifeNum);
+        System.out.print(" | score:" + score + " | lifeNum:" + pacman.lifeNum);
 
-            step += 1;
-            System.out.println(" | step:" + path[step] + "|step num:" + step);
-        
+        step += 1;
+        System.out.println(" | step:" + pacman.direction + "|step num:" + step);
     }
+
     // Method for update the figure location on the board (base on the figure
     // direction)
     private void updateBoardValue(Figure figure) {
@@ -209,14 +198,6 @@ public class Board {
                 step = -1;
                 System.out.println("********* Pacman died *********");
             }
-        }
-    }
-
-    public void cancelTimer() {
-        // This method cancels the timer and stops further updates
-        if (timer != null) {
-            timer.cancel();
-            timer = null; // Nullify to ensure it's not used again
         }
     }
 
