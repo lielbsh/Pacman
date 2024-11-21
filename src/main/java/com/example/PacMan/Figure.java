@@ -12,7 +12,7 @@ public abstract class Figure {
 
     protected int boardIndex; // e.g 8 or 16 or 32 or 64
     protected boolean IsPredetor;
-    boolean die = false;
+    public boolean die = false;
     protected int[] coordinates;
     protected char direction = 'S';
     // protected int[] nextStep = { 0, 0 };

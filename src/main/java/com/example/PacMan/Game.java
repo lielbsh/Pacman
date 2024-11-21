@@ -16,7 +16,7 @@ public class Game {
     public Game() {
         this.currentState = GameState.ON;
         // Initialize the Board and pass the WebSocket handler to it
-        this.board = new Board();
+        this.board = new Board(this);
     }
 
     public Board getBoard() {

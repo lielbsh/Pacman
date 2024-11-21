@@ -31,8 +31,9 @@ public class Board {
             'D', 'D', 'D', 'R', 'R', 'S', 'S'
     };
 
-    public Board() {
+    public Board(Game game) {
         this.score = 0;
+        this.game = game;
     }
 
     public void updateDirection(char direction) {
@@ -47,7 +48,7 @@ public class Board {
                 "lives", String.valueOf(pacman.lifeNum),
                 "die", String.valueOf(pacman.die),
                 "isPredator", String.valueOf(pacman.IsPredetor),
-                "status", "started");
+                "status", String.valueOf(game.currentState));
         return data;
     }
 
@@ -68,8 +69,16 @@ public class Board {
     }
 
     public void handlerun() {
-        if (pacman.die)
+        System.out.println(String.valueOf(game.currentState));
+
+        if (pacman.die) {
+            updateBoardValue(pacman, new int[] { 2, 7 });
+            for (Ghost ghost : ghosts) {
+                updateBoardValue(ghost, new int[] { 7, 7 });
+            }
+            pacman.die = false;
             return;
+        }
 
         System.out.println("Updating the board...");
         System.out.println(boardToString(boardArray));
@@ -78,6 +87,7 @@ public class Board {
 
         if (pacman.lifeNum <= 0) {
             game.gameOver();
+            System.out.println("Game Stat:" + game.currentState);
         }
 
         // First ghost
@@ -187,10 +197,10 @@ public class Board {
             } else { // Pacman die
                 // Move Pacman and Ghosts to starting point
                 System.out.println("Pacman died at coordinates:" + Arrays.toString(coordinates));
-                updateBoardValue(pacman, new int[] { 2, 7 });
-                for (Ghost ghost : ghosts) {
-                    updateBoardValue(ghost, new int[] { 7, 7 });
-                }
+                // updateBoardValue(pacman, new int[] { 2, 7 });
+                // for (Ghost ghost : ghosts) {
+                // updateBoardValue(ghost, new int[] { 7, 7 });
+                // }
                 // Update the score (-10 points)
                 score = Math.max(score - 10, 0);
                 // Kill pacmen
