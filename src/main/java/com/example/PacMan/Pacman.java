@@ -23,7 +23,7 @@ public class Pacman extends Figure {
         } else {
             this.direction = 'S';
         }
-        System.out.print("| pacman direction:" + direction);
+        System.out.println("| pacman direction:" + direction);
     }
 
     @Override
@@ -32,13 +32,6 @@ public class Pacman extends Figure {
         lifeNum -= 1;
         System.out.println("new coordinates" + Arrays.toString(this.coordinates));
         direction = 'S';
-        // new Timer().schedule(new TimerTask() {
-        // @Override
-        // public void run() {
-        // die = false;
-        // System.out.println("Resuming after delay...");
-        // }
-        // }, 1000); // delay of 8 sec
     }
 
     @Override
