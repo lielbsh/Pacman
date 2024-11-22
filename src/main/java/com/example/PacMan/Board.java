@@ -1,6 +1,7 @@
 package com.example.PacMan;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Board {
@@ -30,6 +31,7 @@ public class Board {
             'R', 'U', 'U', 'U', 'U', 'R', 'S', 'R', 'R', 'R', 'U', 'U', 'S', 'S', 'L', 'L', 'L', 'L', 'L', 'L', 'D',
             'D', 'D', 'D', 'R', 'R', 'S', 'S'
     };
+    Map<Integer, int[]> oldCoordinate = new HashMap<>();
 
     public Board(Game game) {
         this.score = 0;
@@ -68,10 +70,14 @@ public class Board {
         return sb.toString();
     }
 
+    // Game logic for each tick
     public void handlerun() {
-        System.out.println(String.valueOf(game.currentState));
+        System.out.println("Game is " + String.valueOf(game.currentState));
+        System.out.println(boardToString(boardArray));
+        System.out.println("Updating the board...");
 
         if (pacman.die) {
+            // Move Pacman and Ghosts to starting point
             updateBoardValue(pacman, new int[] { 2, 7 });
             for (Ghost ghost : ghosts) {
                 updateBoardValue(ghost, new int[] { 7, 7 });
@@ -80,11 +86,6 @@ public class Board {
             return;
         }
 
-        System.out.println("Updating the board...");
-        System.out.println(boardToString(boardArray));
-
-        // Update game logic each tick
-
         if (pacman.lifeNum <= 0) {
             game.gameOver();
             System.out.println("Game Stat:" + game.currentState);
@@ -92,20 +93,47 @@ public class Board {
 
         // First ghost
         ghosts[0].setDirection(boardArray, pacman); // Render diraction & Changes the nextStep
-        updateBoardValue(ghosts[0]); // Delete value from the old location on the board
+        removeFromBoard(ghosts[0]); // Delete value from the old location on the board and save oldCoor
+        ghosts[0].setCoordinates(); // Changes the coordinates acording to the choosen diraction
+        addToBoard(ghosts[0]); // Add to the new location on the board
 
+        // 2nd ghost
         if (step > 2) {
             ghosts[1].setDirection(boardArray, pacman);
-            updateBoardValue(ghosts[1]);
+            removeFromBoard(ghosts[1]);
+            ghosts[1].setCoordinates();
+            addToBoard(ghosts[1]);
         }
 
+        // 3rd ghost
         if (step > 5) {
             ghosts[2].setDirection(boardArray, pacman);
-            updateBoardValue(ghosts[2]);
+            removeFromBoard(ghosts[2]);
+            ghosts[2].setCoordinates();
+            addToBoard(ghosts[2]);
         }
 
-        // Pac-Man Logic
-        updateBoardValue(pacman); // The Pacman make its move
+        // Pac-Man Logic //
+        removeFromBoard(pacman);
+        pacman.setCoordinates();
+
+        System.out.println("oldCoordinate:");
+        System.out.print(oldCoordinate);
+        // logic for replacing places with ghost
+        for (Ghost ghost : ghosts) {
+            int index = ghost.boardIndex;
+            System.out.println(index);
+            if (Arrays.equals(pacman.coordinates, oldCoordinate.get(index))) {
+                if (Arrays.equals(ghost.coordinates, oldCoordinate.get(8))) {
+                    pacman.setCoordinates(oldCoordinate.get(8)); // Stay in prev place
+                    addToBoard(pacman);
+                    KillPacman();
+                    return;
+                }
+            }
+        }
+
+        addToBoard(pacman); // The Pacman make its move
         eat(); // Handle interactions
 
         System.out.print(" | score:" + score + " | lifeNum:" + pacman.lifeNum);
@@ -114,8 +142,25 @@ public class Board {
         System.out.println(" | step:" + pacman.direction + "|step num:" + step);
     }
 
-    // Method for update the figure location on the board (base on the figure
+    // Methods for update the figure location on the board (base on the figure
     // direction)
+    private void removeFromBoard(Figure figure) {
+        int boardIndex = figure.boardIndex;
+        System.out.print(" | figureInx:" + Integer.toString(boardIndex));
+
+        // Delete value from the old location on the board
+        int[] oldCor = figure.coordinates;
+        boardArray[oldCor[1]][oldCor[0]] -= boardIndex;
+        oldCoordinate.put(boardIndex, oldCor);
+    }
+
+    private void addToBoard(Figure figure) {
+        int boardIndex = figure.boardIndex;
+        int[] newCor = figure.coordinates;
+        System.out.println(" | " + Arrays.toString(newCor));
+        boardArray[newCor[1]][newCor[0]] += boardIndex;
+    }
+
     private void updateBoardValue(Figure figure) {
         int boardIndex = figure.boardIndex;
         System.out.print(" | figureInx:" + Integer.toString(boardIndex));
@@ -140,6 +185,7 @@ public class Board {
         // Delete value from the old location on the board
         int[] oldCor = figure.coordinates;
         boardArray[oldCor[1]][oldCor[0]] -= boardIndex;
+        oldCoordinate.put(boardIndex, oldCor);
 
         // Set the new coordinates & update the board
         figure.setCoordinates(newCoordinates);
@@ -193,17 +239,19 @@ public class Board {
                 }
 
             } else { // Pacman die
-                // Move Pacman and Ghosts to starting point
                 System.out.println("Pacman died at coordinates:" + Arrays.toString(coordinates));
-
-                // Update the score (-10 points)
-                score = Math.max(score - 10, 0);
-                // Kill pacmen
-                pacman.die();
-                step = -1;
-                System.out.println("********* Pacman died *********");
+                KillPacman();
             }
         }
+    }
+
+    private void KillPacman() {
+        // Update the score (-10 points)
+        score = Math.max(score - 10, 0);
+        // Kill pacmen
+        pacman.die();
+        step = -1;
+        System.out.println("********* Pacman died *********");
     }
 
     public static String boardToString(int[][] board) {
