@@ -40,23 +40,7 @@ public class Ghost extends Figure {
         return true;
     };
 
-    // Helper function for random direction
-    // private char randomDirection(List<Character> availableDirections, int[][]
-    // boardArray) {
-    // int randomInt = random.nextInt(availableDirections.size());
-    // char direction = availableDirections.get(randomInt);
-
-    // if (isMovePossible(direction, boardArray)) {
-    // return direction;
-
-    // } else {
-    // directionsList.remove(Character.valueOf(direction));
-    // return randomDirection(availableDirections, boardArray);
-    // }
-    // }
-
     // Changes the direction to chase/run from the pacman
-    @Override
     public void setDirection(int[][] boardArray, Pacman pacman) {
         int[] pacmanCoordinates = pacman.coordinates;
         boolean isPredetor = pacman.IsPredetor;
@@ -78,37 +62,39 @@ public class Ghost extends Figure {
     }
 
     private boolean moveHorizontal(int[][] boardArray, int[] pacmanCoordinates, boolean isPredetor) {
-        char firstDirection='R';
-        char secondDirection='L';
-        if (isPredetor){
-            firstDirection='L';
-            secondDirection='R';
+        char firstDirection = 'R';
+        char secondDirection = 'L';
+        if (isPredetor) {
+            firstDirection = 'L';
+            secondDirection = 'R';
         }
         if (coordinates[0] < pacmanCoordinates[0] && isMovePossible(firstDirection, boardArray)) {
-            direction=firstDirection;
+            direction = firstDirection;
             return true;
         } else if (coordinates[0] > pacmanCoordinates[0] && isMovePossible(secondDirection, boardArray)) {
-            direction=secondDirection;
+            direction = secondDirection;
             return true;
         }
         return false;
     }
 
     private boolean moveVertical(int[][] boardArray, int[] pacmanCoordinates, boolean isPredetor) {
-        char firstDirection='D';
-        char secondDirection='U';
-        if (isPredetor){
-            firstDirection='U';
-            secondDirection='D';
-        }
-        if (coordinates[1] < pacmanCoordinates[1] && isMovePossible(firstDirection, boardArray)) {
-            direction=firstDirection;
-            return true;
+        char firstDirection = 'D';
+        char secondDirection = 'U';
 
+        if (isPredetor) {
+            firstDirection = 'U';
+            secondDirection = 'D';
+        }
+
+        if (coordinates[1] < pacmanCoordinates[1] && isMovePossible(firstDirection, boardArray)) {
+            direction = firstDirection;
+            return true;
         } else if (coordinates[1] > pacmanCoordinates[1] && isMovePossible(secondDirection, boardArray)) {
-            direction=secondDirection;
+            direction = secondDirection;
             return true;
         }
+
         return false;
     }
 }

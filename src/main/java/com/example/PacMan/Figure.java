@@ -15,7 +15,6 @@ public abstract class Figure {
     public boolean die = false;
     protected int[] coordinates;
     protected char direction = 'S';
-    // protected int[] nextStep = { 0, 0 };
 
     protected void setCoordinates() {
         int[] nextCoordinates = { this.coordinates[0] + NEXT_STEP_OPTIONS.get(direction)[0],
@@ -31,9 +30,6 @@ public abstract class Figure {
     };
 
     protected void setDirection(char newDirection, int[][] boardArray) {
-    };
-
-    protected void setDirection(int[][] boardArray, Pacman pacman) {
     };
 
     protected boolean isMovePossible(char direction, int[][] boardArray) {

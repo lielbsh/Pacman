@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class Board {
     Game game; // Reference to the Game class
-    int numsCoin=4;
+    int numsCoin = 74;
     int score = 0;
     int step = 0; // for moving the pacman
     int[][] boardArray = {
@@ -25,10 +25,10 @@ public class Board {
             { 1, 1, 1, 2, 2, 2, 2, 128, 2, 2, 2, 2, 1, 1, 1 },
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
     };
-    
+
     Ghost[] ghosts = { new Ghost(1), new Ghost(2), new Ghost(3) };
     Pacman pacman = new Pacman();
-    
+
     Map<Integer, int[]> oldCoordinate = new HashMap<>();
 
     public Board(Game game) {
@@ -89,7 +89,7 @@ public class Board {
             System.out.println("Game Stat:" + game.currentState);
             return;
         }
-        if (numsCoin<=0){
+        if (numsCoin <= 0) {
             game.win();
             return;
 
@@ -121,8 +121,6 @@ public class Board {
         removeFromBoard(pacman);
         pacman.setCoordinates();
 
-        System.out.println("oldCoordinate:");
-        System.out.print(oldCoordinate);
         // logic for replacing places with ghost
         for (Ghost ghost : ghosts) {
             int index = ghost.boardIndex;
@@ -139,11 +137,8 @@ public class Board {
 
         addToBoard(pacman); // The Pacman make its move
         eat(); // Handle interactions
-
         System.out.print(" | score:" + score + " | lifeNum:" + pacman.lifeNum);
-
         step += 1;
-        System.out.println(" | step:" + pacman.direction + "|step num:" + step);
     }
 
     // Methods for update the figure location on the board (base on the figure
@@ -160,21 +155,6 @@ public class Board {
 
     private void addToBoard(Figure figure) {
         int boardIndex = figure.boardIndex;
-        int[] newCor = figure.coordinates;
-        System.out.println(" | " + Arrays.toString(newCor));
-        boardArray[newCor[1]][newCor[0]] += boardIndex;
-    }
-
-    private void updateBoardValue(Figure figure) {
-        int boardIndex = figure.boardIndex;
-        System.out.print(" | figureInx:" + Integer.toString(boardIndex));
-
-        // Delete value from the old location on the board
-        int[] oldCor = figure.coordinates;
-        boardArray[oldCor[1]][oldCor[0]] -= boardIndex;
-
-        // Set the new coordinates & update the board
-        figure.setCoordinates();
         int[] newCor = figure.coordinates;
         System.out.println(" | " + Arrays.toString(newCor));
         boardArray[newCor[1]][newCor[0]] += boardIndex;
@@ -208,7 +188,7 @@ public class Board {
             // Collect the coin
             boardArray[y][x] -= 2;
             score += 10;
-            numsCoin-=1;
+            numsCoin -= 1;
             System.out.print("| Coin collected");
         }
 
