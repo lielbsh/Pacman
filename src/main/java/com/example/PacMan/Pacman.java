@@ -43,7 +43,7 @@ public class Pacman extends Figure {
                 IsPredetor = false;
                 System.out.println("Pacman is no longer a predator");
             }
-        }, 10000); // delay of 10 sec
+        }, 15000); // delay of 15 sec
     }
 
 }
