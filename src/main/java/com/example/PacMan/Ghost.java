@@ -84,10 +84,10 @@ public class Ghost extends Figure {
             firstDirection='L';
             secondDirection='R';
         }
-        if (coordinates[0] < pacmanCoordinates[0] && isMovePossible('R', boardArray)) {
+        if (coordinates[0] < pacmanCoordinates[0] && isMovePossible(firstDirection, boardArray)) {
             direction=firstDirection;
             return true;
-        } else if (coordinates[0] > pacmanCoordinates[0] && isMovePossible('L', boardArray)) {
+        } else if (coordinates[0] > pacmanCoordinates[0] && isMovePossible(secondDirection, boardArray)) {
             direction=secondDirection;
             return true;
         }
@@ -101,11 +101,11 @@ public class Ghost extends Figure {
             firstDirection='U';
             secondDirection='D';
         }
-        if (coordinates[1] < pacmanCoordinates[1] && isMovePossible('D', boardArray)) {
+        if (coordinates[1] < pacmanCoordinates[1] && isMovePossible(firstDirection, boardArray)) {
             direction=firstDirection;
             return true;
 
-        } else if (coordinates[1] > pacmanCoordinates[1] && isMovePossible('U', boardArray)) {
+        } else if (coordinates[1] > pacmanCoordinates[1] && isMovePossible(secondDirection, boardArray)) {
             direction=secondDirection;
             return true;
         }
