@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.PacMan.Game.GameState;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class GameController {
@@ -22,6 +24,9 @@ public class GameController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/")
     public Map<String, String> getGameData(@RequestBody String direction) {
+        if (game.currentState!=GameState.ON){
+            game.currentState=GameState.ON;
+        }
         System.out.println("The direction is:" + direction.charAt(1));
 
         game.board.updateDirection(direction.charAt(1));

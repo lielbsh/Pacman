@@ -29,5 +29,10 @@ public class Game {
 
     public void gameOver() {
         currentState = GameState.LOSS;
+        this.board=new Board(this);
+    }
+    public void win() {
+        currentState = GameState.WIN;
+        this.board=new Board(this);
     }
 }

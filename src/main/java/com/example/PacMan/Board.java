@@ -6,6 +6,7 @@ import java.util.Map;
 
 public class Board {
     Game game; // Reference to the Game class
+    int numsCoin=4;
     int score = 0;
     int step = 0; // for moving the pacman
     int[][] boardArray = {
@@ -24,13 +25,10 @@ public class Board {
             { 1, 1, 1, 2, 2, 2, 2, 128, 2, 2, 2, 2, 1, 1, 1 },
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
     };
-    long timeInterval = 2000;
+    
     Ghost[] ghosts = { new Ghost(1), new Ghost(2), new Ghost(3) };
     Pacman pacman = new Pacman();
-    char[] path = {
-            'R', 'U', 'U', 'U', 'U', 'R', 'S', 'R', 'R', 'R', 'U', 'U', 'S', 'S', 'L', 'L', 'L', 'L', 'L', 'L', 'D',
-            'D', 'D', 'D', 'R', 'R', 'S', 'S'
-    };
+    
     Map<Integer, int[]> oldCoordinate = new HashMap<>();
 
     public Board(Game game) {
@@ -89,6 +87,12 @@ public class Board {
         if (pacman.lifeNum <= 0) {
             game.gameOver();
             System.out.println("Game Stat:" + game.currentState);
+            return;
+        }
+        if (numsCoin<=0){
+            game.win();
+            return;
+
         }
 
         // First ghost
@@ -204,6 +208,7 @@ public class Board {
             // Collect the coin
             boardArray[y][x] -= 2;
             score += 10;
+            numsCoin-=1;
             System.out.print("| Coin collected");
         }
 
