@@ -54,7 +54,6 @@ public abstract class Figure {
             System.out.println("move is possible - wrap around");
             return true;
         }
-        System.out.println("Pass the wrap around condition");
 
         // Calculate the next coordinates
         int[] nextCoordinates = {

@@ -26,6 +26,13 @@ public class Ghost extends Figure {
             return false;
         }
 
+        // Special case: wrapping logic
+        if (((coordinates[0] == 0 && direction == 'L') || (coordinates[0] == 14 && direction == 'R'))
+                && coordinates[1] == 7) {
+            System.out.println("move is possible - wrap around");
+            return false;
+        }
+
         // Check for the specific condition for Ghost (e.g., value 128)
         int[] nextCoordinates = {
                 this.coordinates[0] + NEXT_STEP_OPTIONS.get(direction)[0],

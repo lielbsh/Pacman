@@ -234,7 +234,6 @@ public class Board {
                     // Check if the ghost's boardIndex matches the boardValue of the ghost
                     if ((boardValue & ghost.boardIndex) != 0) {
                         // Eat the ghost
-                        boardArray[y][x] -= ghost.boardIndex; // Remove ghost from board
                         ghost.die();
                         updateBoardValue(ghost, new int[] { 7, 7 });
                         score += 200; // Increase score
