@@ -28,7 +28,7 @@ public class Board {
 
     Ghost[] ghosts = { new Ghost(1), new Ghost(2), new Ghost(3) };
     Pacman pacman = new Pacman();
-    Food food=new Food();
+    Food food = new Food();
 
     Map<Integer, int[]> oldCoordinate = new HashMap<>();
 
@@ -95,9 +95,10 @@ public class Board {
             return;
 
         }
-        
-        //Food
+
+        // Food
         updateBoardValue(food);
+
         // First ghost
         ghosts[0].setDirection(boardArray, pacman); // Render diraction & Changes the nextStep
         removeFromBoard(ghosts[0]); // Delete value from the old location on the board and save oldCoor
@@ -139,10 +140,11 @@ public class Board {
         }
 
         addToBoard(pacman); // The Pacman make its move
-        
+
         eat(); // Handle interactions
-        
-        System.out.print(" | score:" + score + " | lifeNum:" + pacman.lifeNum);
+
+        System.out.print(" | score:" + score + " | lifeNum:" + pacman.lifeNum + " | isPredetor:"
+                + Boolean.toString(pacman.IsPredetor) + " | ");
         step += 1;
     }
 
@@ -182,18 +184,19 @@ public class Board {
         System.out.println(" | " + Arrays.toString(newCor));
         boardArray[newCor[1]][newCor[0]] += boardIndex;
     }
+
     private void updateBoardValue(Food food) {
         int boardIndex = food.boardIndex;
         int[] oldCor = food.getcoordinate();
-        int boardvalue=boardArray[oldCor[1]][oldCor[0]];
-        System.err.println(food.getIsThere()+"value"+String.valueOf(boardvalue));
-        if ((boardvalue & boardIndex) !=0 & !food.getIsThere()){
-            boardArray[oldCor[1]][oldCor[0]]-=boardIndex;
-        }if ((boardvalue & boardIndex) ==0 & food.getIsThere()){
-            boardArray[oldCor[1]][oldCor[0]]+=boardIndex;
+        int boardvalue = boardArray[oldCor[1]][oldCor[0]];
+        System.err.println(food.getIsThere() + "value" + String.valueOf(boardvalue));
+        if ((boardvalue & boardIndex) != 0 & !food.getIsThere()) {
+            boardArray[oldCor[1]][oldCor[0]] -= boardIndex;
         }
-        
-        
+        if ((boardvalue & boardIndex) == 0 & food.getIsThere()) {
+            boardArray[oldCor[1]][oldCor[0]] += boardIndex;
+        }
+
     }
 
     private void eat() {
