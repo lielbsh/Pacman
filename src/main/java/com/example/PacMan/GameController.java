@@ -24,12 +24,13 @@ public class GameController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/")
     public Map<String, String> getGameData(@RequestBody String direction) {
-        if (game.currentState!=GameState.ON){
-            game.currentState=GameState.ON;
+        if (game.currentState != GameState.ON) {
+            game.currentState = GameState.ON;
         }
         System.out.println("The direction is:" + direction.charAt(1));
 
         game.board.updateDirection(direction.charAt(1));
+        System.out.print("| Pacman direction:" + direction);
         game.board.handlerun();
 
         return game.board.getData();

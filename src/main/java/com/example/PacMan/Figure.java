@@ -1,5 +1,6 @@
 package com.example.PacMan;
 
+import java.util.Arrays;
 import java.util.Map;
 
 public abstract class Figure {
@@ -17,9 +18,21 @@ public abstract class Figure {
     protected char direction = 'S';
 
     protected void setCoordinates() {
+        // Special case: wrapping logic
+        if (coordinates[0] == 0 && coordinates[1] == 7 && direction == 'L') {
+            System.out.println("|  Wrapping around: Left edge  |");
+            this.coordinates[0] = 14; // Move to the other side of the row
+            return;
+        } else if (coordinates[0] == 14 && coordinates[1] == 7 && direction == 'R') {
+            System.out.println("|  Wrapping around: Right edge  |");
+            this.coordinates[0] = 0; // Move to the start of the row
+            return;
+        }
+        // Calculate the next coordinates based on the direction
         int[] nextCoordinates = { this.coordinates[0] + NEXT_STEP_OPTIONS.get(direction)[0],
                 this.coordinates[1] + NEXT_STEP_OPTIONS.get(direction)[1] };
 
+        System.out.println("Next coordinates:" + Arrays.toString(nextCoordinates));
         this.coordinates = nextCoordinates;
     };
 
@@ -35,6 +48,12 @@ public abstract class Figure {
     protected boolean isMovePossible(char direction, int[][] boardArray) {
         if (die)
             return false;
+
+        // Special case: wrapping logic
+        if (((coordinates[0] == 0 && direction == 'L') || (coordinates[0] == 14 && direction == 'R'))
+                && coordinates[1] == 7) {
+            return true;
+        }
 
         // Calculate the next coordinates
         int[] nextCoordinates = {
