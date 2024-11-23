@@ -17,7 +17,7 @@ public class Board {
             { 1, 2, 1, 2, 1, 0, 1, 1, 1, 0, 1, 2, 1, 2, 1 },
             { 1, 2, 2, 2, 0, 0, 0, 1, 0, 0, 0, 2, 2, 2, 1 },
             { 1, 1, 1, 2, 1, 1, 0, 0, 0, 1, 1, 2, 1, 1, 1 },
-            { 1, 0, 8, 2, 0, 0, 0, 112, 0, 0, 0, 2, 0, 0, 1 },
+            { 0, 0, 8, 2, 0, 0, 0, 112, 0, 0, 0, 2, 0, 0, 0 },
             { 1, 1, 1, 2, 1, 0, 0, 0, 0, 0, 1, 2, 1, 1, 1 },
             { 1, 2, 2, 2, 2, 2, 1, 1, 1, 2, 2, 2, 2, 2, 1 },
             { 1, 1, 2, 1, 1, 2, 2, 2, 2, 2, 1, 1, 2, 1, 1 },
@@ -28,6 +28,7 @@ public class Board {
 
     Ghost[] ghosts = { new Ghost(1), new Ghost(2), new Ghost(3) };
     Pacman pacman = new Pacman();
+    Food food=new Food();
 
     Map<Integer, int[]> oldCoordinate = new HashMap<>();
 
@@ -94,7 +95,9 @@ public class Board {
             return;
 
         }
-
+        
+        //Food
+        updateBoardValue(food);
         // First ghost
         ghosts[0].setDirection(boardArray, pacman); // Render diraction & Changes the nextStep
         removeFromBoard(ghosts[0]); // Delete value from the old location on the board and save oldCoor
@@ -136,7 +139,9 @@ public class Board {
         }
 
         addToBoard(pacman); // The Pacman make its move
+        
         eat(); // Handle interactions
+        
         System.out.print(" | score:" + score + " | lifeNum:" + pacman.lifeNum);
         step += 1;
     }
@@ -177,6 +182,19 @@ public class Board {
         System.out.println(" | " + Arrays.toString(newCor));
         boardArray[newCor[1]][newCor[0]] += boardIndex;
     }
+    private void updateBoardValue(Food food) {
+        int boardIndex = food.boardIndex;
+        int[] oldCor = food.getcoordinate();
+        int boardvalue=boardArray[oldCor[1]][oldCor[0]];
+        System.err.println(food.getIsThere()+"value"+String.valueOf(boardvalue));
+        if ((boardvalue & boardIndex) !=0 & !food.getIsThere()){
+            boardArray[oldCor[1]][oldCor[0]]-=boardIndex;
+        }if ((boardvalue & boardIndex) ==0 & food.getIsThere()){
+            boardArray[oldCor[1]][oldCor[0]]+=boardIndex;
+        }
+        
+        
+    }
 
     private void eat() {
         int[] coordinates = pacman.coordinates;
@@ -195,6 +213,7 @@ public class Board {
         if ((boardValue & 4) != 0) {
             // Collect the food
             boardArray[y][x] -= 4;
+            food.eaten();
             score += 300;
             System.out.print(" | food eaten");
         }
