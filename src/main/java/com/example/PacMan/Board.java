@@ -96,6 +96,7 @@ public class Board {
 
         // Food
         updateBoardValue(food);
+
         // First ghost
         ghosts[0].setDirection(boardArray, pacman); // Render diraction & Changes the nextStep
         removeFromBoard(ghosts[0]); // Delete value from the old location on the board and save oldCoor
@@ -186,7 +187,6 @@ public class Board {
         int[] oldCor = food.getcoordinate();
         int boardvalue = boardArray[oldCor[1]][oldCor[0]];
         System.err.println(food.getIsThere() + "value" + String.valueOf(boardvalue));
-
         if ((boardvalue & boardIndex) != 0 & !food.getIsThere()) {
             boardArray[oldCor[1]][oldCor[0]] -= boardIndex;
         }
