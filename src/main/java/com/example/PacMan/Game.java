@@ -29,11 +29,17 @@ public class Game {
 
     public void gameOver() {
         currentState = GameState.LOSS;
+        System.out.println(".................");
+        System.out.println("GAME OVER");
+        System.out.println(".................");
         this.board = new Board(this);
     }
 
     public void win() {
         currentState = GameState.WIN;
+        System.out.println(".................");
+        System.out.println("YOU WIN !");
+        System.out.println(".................");
         this.board = new Board(this);
     }
 }

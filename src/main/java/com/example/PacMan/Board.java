@@ -28,7 +28,7 @@ public class Board {
 
     Ghost[] ghosts = { new Ghost(1), new Ghost(2), new Ghost(3) };
     Pacman pacman = new Pacman();
-    Food food=new Food();
+    Food food = new Food();
 
     Map<Integer, int[]> oldCoordinate = new HashMap<>();
 
@@ -87,16 +87,14 @@ public class Board {
 
         if (pacman.lifeNum <= 0) {
             game.gameOver();
-            System.out.println("Game Stat:" + game.currentState);
             return;
         }
         if (numsCoin <= 0) {
             game.win();
             return;
-
         }
-        
-        //Food
+
+        // Food
         updateBoardValue(food);
         // First ghost
         ghosts[0].setDirection(boardArray, pacman); // Render diraction & Changes the nextStep
@@ -127,7 +125,6 @@ public class Board {
         // logic for replacing places with ghost
         for (Ghost ghost : ghosts) {
             int index = ghost.boardIndex;
-            System.out.println(index);
             if (Arrays.equals(pacman.coordinates, oldCoordinate.get(index))) {
                 if (Arrays.equals(ghost.coordinates, oldCoordinate.get(8))) {
                     pacman.setCoordinates(oldCoordinate.get(8)); // Stay in prev place
@@ -139,10 +136,11 @@ public class Board {
         }
 
         addToBoard(pacman); // The Pacman make its move
-        
+
         eat(); // Handle interactions
-        
-        System.out.print(" | score:" + score + " | lifeNum:" + pacman.lifeNum);
+
+        System.out.print(" | score:" + score + " | lifeNum:" + pacman.lifeNum + " | isPredetor:"
+                + Boolean.toString(pacman.IsPredetor) + " | ");
         step += 1;
     }
 
@@ -182,18 +180,20 @@ public class Board {
         System.out.println(" | " + Arrays.toString(newCor));
         boardArray[newCor[1]][newCor[0]] += boardIndex;
     }
+
     private void updateBoardValue(Food food) {
         int boardIndex = food.boardIndex;
         int[] oldCor = food.getcoordinate();
-        int boardvalue=boardArray[oldCor[1]][oldCor[0]];
-        System.err.println(food.getIsThere()+"value"+String.valueOf(boardvalue));
-        if ((boardvalue & boardIndex) !=0 & !food.getIsThere()){
-            boardArray[oldCor[1]][oldCor[0]]-=boardIndex;
-        }if ((boardvalue & boardIndex) ==0 & food.getIsThere()){
-            boardArray[oldCor[1]][oldCor[0]]+=boardIndex;
+        int boardvalue = boardArray[oldCor[1]][oldCor[0]];
+        System.err.println(food.getIsThere() + "value" + String.valueOf(boardvalue));
+
+        if ((boardvalue & boardIndex) != 0 & !food.getIsThere()) {
+            boardArray[oldCor[1]][oldCor[0]] -= boardIndex;
         }
-        
-        
+        if ((boardvalue & boardIndex) == 0 & food.getIsThere()) {
+            boardArray[oldCor[1]][oldCor[0]] += boardIndex;
+        }
+
     }
 
     private void eat() {
@@ -222,7 +222,7 @@ public class Board {
         if ((boardValue & 128) != 0) {
             pacman.setPredetor(); // Make Pacman a predator
             boardArray[y][x] -= 128;
-            System.out.println("| Pac-Man is preditor !! |");
+            System.out.println("******** Pac-Man is now preditor !! *********");
         }
 
         // check the case of Pacman and Ghosts collision
@@ -238,11 +238,12 @@ public class Board {
                         ghost.die();
                         updateBoardValue(ghost, new int[] { 7, 7 });
                         score += 200; // Increase score
-                        System.out.println("Pacman ate the ghost!");
+                        System.out.println("XXX Pacman ate the ghost! XXX");
                     }
                 }
 
-            } else { // Pacman die
+                // Pacman die
+            } else {
                 System.out.println("Pacman died at coordinates:" + Arrays.toString(coordinates));
                 KillPacman();
             }
@@ -267,11 +268,8 @@ public class Board {
                 // Get the board value for the current cell
                 int cellValue = board[i][j];
 
-                // Generate the visual representation for the cell value
-                String cellDisplay = getCellDisplay(cellValue);
-
                 // Ensure each cell has the same width (e.g., 3 characters for each)
-                sb.append(String.format("%-3s", cellDisplay)); // Left-justified with width of 3
+                sb.append(String.format("%-3s", cellValue)); // Left-justified with width of 3
             }
             sb.append("\n"); // Add a new line after each row
         }

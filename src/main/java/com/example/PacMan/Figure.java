@@ -1,6 +1,5 @@
 package com.example.PacMan;
 
-import java.util.Arrays;
 import java.util.Map;
 
 public abstract class Figure {
@@ -28,11 +27,11 @@ public abstract class Figure {
             this.coordinates[0] = 0; // Move to the start of the row
             return;
         }
+
         // Calculate the next coordinates based on the direction
         int[] nextCoordinates = { this.coordinates[0] + NEXT_STEP_OPTIONS.get(direction)[0],
                 this.coordinates[1] + NEXT_STEP_OPTIONS.get(direction)[1] };
 
-        System.out.println("Next coordinates:" + Arrays.toString(nextCoordinates));
         this.coordinates = nextCoordinates;
     };
 
@@ -52,8 +51,10 @@ public abstract class Figure {
         // Special case: wrapping logic
         if (((coordinates[0] == 0 && direction == 'L') || (coordinates[0] == 14 && direction == 'R'))
                 && coordinates[1] == 7) {
+            System.out.println("move is possible - wrap around");
             return true;
         }
+        System.out.println("Pass the wrap around condition");
 
         // Calculate the next coordinates
         int[] nextCoordinates = {
