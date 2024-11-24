@@ -1,113 +1,145 @@
-# PacMan Project ![Pacman GIF](https://i.gifer.com/T7i.gif)  
+# PacMan Project 🎮  
 
-This is a Java-based PacMan game project that includes multiple classes representing the game logic, board, PacMan, ghosts, and other essential components. The game allows starting, stopping, and tracking the player's score and remaining lives. This README explains the classes, methods, and attributes used in the project.
+Welcome to the **PacMan Project**, a fun, interactive recreation of the classic arcade game built with modern technologies. This project combines a Java-powered backend focused on Object-Oriented Programming (OOP) principles and a dynamic React frontend for a seamless gaming experience.  
 
----
-
-## Classes Overview
-
-### 1. **PacManApplication**
-
-- **Purpose**: The main application class where the game starts.
-- **Main Method**:
-  - `public static void main(String[] args)`: Initializes and launches the game by creating instances of the `Game` class and other necessary components.
+![Pacman GIF](https://i.gifer.com/T7i.gif)  
 
 ---
 
-### 2. **Game**
+## 🎯 Project Overview  
 
-- **Purpose**: Manages the overall game state and controls the board.
-- **Methods**:
-  - `Game()`: Initializes a new game, setting up the board, lives, score, and starting positions of PacMan and the ghosts.
-  - `gameOver()`: Ends the game based on specific conditions, such as losing all lives or meeting win/lose criteria.
-- **Attributes**:
-  - `state` - Enum type representing the game state with possible values: `ON`, `OFF`, `WIN`, `LOSS`.
-  - `board` - An instance of the `Board` class that manages the layout and interactions.
+The **PacMan Project** is a fully functional PacMan game with an emphasis on clean architecture and efficient design.  
+- **Backend**: Built with Java, employing OOP concepts to organize the game logic into modular, reusable classes.  
+- **Frontend**: Developed using React, communicating with the backend via RESTful APIs.  
 
 ---
 
-### 3. **Board**
+## 📊 Game Board Design  
 
-- **Purpose**: Represents the game board and handles object positions and interactions.
-- **Methods**:
-  - `life()`: Tracks the remaining lives of the player.
-  - `score()`: Updates the score based on collected items like coins.
-  - Additional methods for rendering the board, collision detection, and managing objects will be implemented.
-- **Attributes**:
-  - `boardArray` - A 2D array representing the game layout:
-    - `0` - Empty space
-    - `1` - Block
-    - `2` - Coin
-    - `4` - Food
-    - `8` - PacMan
-    - `16` - Ghost1
-    - `32` - Ghost2
-    - `64` - Ghost3
-    - `128` - power-up coin
-  - `nextMove` - Maps PacMan's next move (e.g., `'R'` for Right, `'L'` for Left).
-  - `ghost1`, `ghost2`, `ghost3` - Instances of the `Ghost` class.
-  - `pacman` - An instance of the `Pacman` class.
-  - `eat`
-  - `deleteFromBoard`
-  - `addToBoard`
-  - `updateboard`
+The game board is represented as a **2D array**, with each number indicating a specific game element:  
+
+| Number | Element         |  
+|--------|-----------------|  
+| `0`    | Empty Space      |  
+| `1`    | Block            |  
+| `2`    | Coin             |  
+| `4`    | Food             |  
+| `8`    | PacMan           |  
+| `16`   | Ghost1           |  
+| `32`   | Ghost2           |  
+| `64`   | Ghost3           |  
+| `128`  | Power-Up Coin    |  
+
+This binary-based system ensures simplicity and efficient updates during gameplay.  
 
 ---
 
-### 4. **Ghost (implements Figure)**
+## 🚀 How to Play  
 
-- **Purpose**: Represents a ghost character that moves around the board and interacts with PacMan.
-- **Methods**:
-  - `ghost()`: Initializes or updates the ghost's behavior.
-  - `setSmartDirection()`: Determines the ghost's movement on the board and changes the nexstStep.
-  - `chaseHorizontal` and `chaseVertical`: helper's functions.
-- **Attributes**:
-  - `predator` - Boolean indicating if the ghost is in predator mode (i.e., can harm PacMan).
-  - `direction` - char
+### Prerequisites  
+1. Install the backend and frontend dependencies.  
+2. Ensure you have Java installed for the backend and Node.js for the frontend.  
 
----
-
-### 5. **Pacman (implements Figure)**
-
-- **Purpose**: Represents the player-controlled character, PacMan.
-- **Methods**:
-  - `constructor()`: Initializes PacMan's attributes.
-  - `move()`: Handles PacMan's movement based on player input.
-- **Attributes**:
-  - `predator` - Boolean indicating if PacMan is in predator mode (e.g., when powered-up to eat ghosts).
+### Steps  
+1. Clone the repositories for both the backend and frontend.  
+2. Start the backend server (Java) and frontend development server (React).  
+3. Open the game in your browser via `http://localhost:3000`.  
 
 ---
 
-### 6. **Figure (Abstract Class)**
+## 📷 Screenshots  
 
-- **Purpose**: Abstract class for shared behavior between `Ghost` and `Pacman`.
-- **Methods**:
-  - `setCordinates()`: Abstract method defining movement, implemented in subclasses.
-  - `isMovePossible()`: boolean
-  - `predator()`: Determines if the figure acts as a predator in the current state.
-  - `die`
-- **Attributes**:
-  - `coordinates`
-  - `predator` - Boolean indicating the predator state of the figure.
+### Game in Action  
+![Game Screenshot 1](https://imgur.com/mnub7gH)  
+![Game Screenshot 2](https://imgur.com/cJdfmt3)  
+
+### Gameplay Demo  
+[Watch Video](https://media.canva.com/v2/files/uri:ifs%3A%2F%2FV%2FaHYrjM65hWnY2LvqSz6xyermTrOFtaJKzwPXkCrW29Y.mp4?csig=AAAAAAAAAAAAAAAAAAAAAGqsXLaJAcFaiKTDWWP4Nvv7HCfNUUl4_KCDvXr23Tpq&exp=1732456860&
 
 ---
-
-## Game Enum
-
-- **Purpose**: Defines the possible states of the game.
-- **Values**:
-  - `ON` - The game is active.
-  - `OFF` - The game is inactive.
-  - `WIN` - The player has won.
-  - `LOSS` - The player has lost.
-
----
-
-## Next Steps
-
-Future development will focus on implementing:
-
-- Game rendering and graphical output.
-- Detailed movement logic for PacMan and ghosts.
-- Collision detection and interactions.
-- Sound effects and animations.
+### Class Diagram
+                     +---------------------------+
+                     |     PacManApplication     |
+                     |---------------------------|
+                     | + main(args: String[])    |
+                     +---------------------------+
+                               ▲
+                               |
+               Composition (◆) |
+                               |
+                               v
+                     +---------------------------+
+                     |           Game            |
+                     |---------------------------|
+                     | Attributes:               |
+                     | +gamestate- enum          |
+                     | +cuurentstate- gamestate  |
+                     | Methods:                  |
+                     | + win()                   |
+                     | + gameOver()              |
+                     +---------------------------+
+                               ▲
+                               |
+               Composition (◆) |
+                               |
+                               v
+                     +------------------------------+
+                     |           Board              |
+                     |------------------------------|
+                     |  Attributes:                 |
+                     | +numscoin -int               |
+                     | +score-int                   |
+                     | +step -int                   |
+                     | +boardArray-int[][]          |
+                     | +oldcoordinate-<int,int[]>Map|
+                     | Methods:                     |
+                     | + score()                    |
+                     | + eat()                      |
+                     | + deleteFromBoard()          |
+                     | + addToBoard()               |
+                     | + updateBoard()              |
+                     +-------------------------------+
+                                      ▲
+                                      |     Composition (◆) 
+              +----------------------+----------------------+           
+              |                      |                      |
+              |                      |                      |
+              |                      |                      |
+              v                      v                      v
+        +----------------------+ ---------------------+ -------------------- +
+        |        Food          |         Ghost        |        Pacman        |
+        |----------------------| ---------------------| ---------------------|
+        | Attributes:          | Attributes:          | Attributes:          |
+        | + boardIndex: int    | + predator: boolean  | + predator: boolean  |
+        | + coordinatesList[]  | + direction: char    | + coordinates: int[] |
+        | + currentIndex: int  | Methods:             | Methods:             |
+        | + isThere: boolean   | + ghost()            | + constructor()      |
+        | Methods:             | + setSmartDirection()| + move()             |
+        | + getCoordinates()   | + chaseHorizontal()  | + predator()         |
+        | + getIsThere()       | + chaseVertical()    | + die()              |
+        | + eaten()            |                      | + getCoordinates()   |
+        +--------------------+ +----------------------| + isMovePossible()   |
+                                          ^           | + setCoordinates()   |
+                                          |           | + predator()         |
+                                          |           | + die()              |
+                                          |           |+ life()              |
+                                          |           +----------------------+
+                                          |                     ^
+                                          |                     |
+                                          +---------------------+
+                                                      |
+                                            Generalization (△)
+                                                      |
+                                                      ▼
+                                            +-------------------------+
+                                            |         Figure          |
+                                            |-------------------------|
+                                            | Attributes:             |
+                                            | + coordinates: int[]    |
+                                            | + predator: boolean    |
+                                            | Methods:               |
+                                            | + setCoordinates()     |
+                                            | + isMovePossible(): boolean |
+                                            | + predator(): boolean  |
+                                            | + die()                |
+                                            +-------------------------+
