@@ -36,25 +36,28 @@ This binary-based system ensures simplicity and efficient updates during gamepla
 
 ## 🚀 How to Play  
 
-### Prerequisites  
-1. Install the backend and frontend dependencies.  
-2. Ensure you have Java installed for the backend and Node.js for the frontend.  
 
-### Steps  
-1. Clone the repositories for both the backend and frontend.  
-2. Start the backend server (Java) and frontend development server (React).  
-3. Open the game in your browser via `http://localhost:3000`.  
 
+### Steps 
+1.Ensure you have Java installed for the backend and Node.js for the frontend.  
+2. Clone the repositories for both the backend and frontend.
+ Link to frontend repository : [Frontend Link](https://github.com/assafassa/PacmanFrontEnd)  
+3. Install the backend and frontend dependencies.
+4. Start the backend server with F5(Java) and frontend development server with -npm start (React).   
+ 
 ---
 
 ## 📷 Screenshots  
 
 ### Game in Action  
-![Game Screenshot 1](https://imgur.com/mnub7gH)  
-![Game Screenshot 2](https://imgur.com/cJdfmt3)  
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+  <img src="https://i.imgur.com/mnub7gH.jpeg" alt="Game Screenshot 1" style="width: 45%; border: 1px solid #ddd; border-radius: 4px;"/>
+  <img src="https://i.imgur.com/cJdfmt3.jpeg" alt="Game Screenshot 2" style="width: 45%; border: 1px solid #ddd; border-radius: 4px;"/>
+</div>
+
 
 ### Gameplay Demo  
-[Watch Video](https://media.canva.com/v2/files/uri:ifs%3A%2F%2FV%2FaHYrjM65hWnY2LvqSz6xyermTrOFtaJKzwPXkCrW29Y.mp4?csig=AAAAAAAAAAAAAAAAAAAAAGqsXLaJAcFaiKTDWWP4Nvv7HCfNUUl4_KCDvXr23Tpq&exp=1732456860&
+[Watch Video](https://media.canva.com/v2/files/uri:ifs%3A%2F%2FV%2FaHYrjM65hWnY2LvqSz6xyermTrOFtaJKzwPXkCrW29Y.mp4?csig=AAAAAAAAAAAAAAAAAAAAAGqsXLaJAcFaiKTDWWP4Nvv7HCfNUUl4_KCDvXr23Tpq&exp=1732456860&signer=video-rpc&token=AAIAAVYAL2FIWXJqTTY1aFduWTJMdnFTejZ4eWVybVRyT0Z0YUpLendQWGtDclcyOVkubXA0AAAAAAGTXnnJYEQ6a_h8C_HXWZEOE-qQl3lv1i8d2-UnHYkSuiHKD7J1)
 
 ---
 ### Class Diagram
@@ -131,15 +134,15 @@ This binary-based system ensures simplicity and efficient updates during gamepla
                                             Generalization (△)
                                                       |
                                                       ▼
-                                            +-------------------------+
-                                            |         Figure          |
-                                            |-------------------------|
-                                            | Attributes:             |
-                                            | + coordinates: int[]    |
-                                            | + predator: boolean    |
-                                            | Methods:               |
-                                            | + setCoordinates()     |
+                                            +-----------------------------+
+                                            |         Figure              |
+                                            |-----------------------------|
+                                            | Attributes:                 |
+                                            | + coordinates: int[]        |
+                                            | + predator: boolean         |
+                                            | Methods:                    |
+                                            | + setCoordinates()          |
                                             | + isMovePossible(): boolean |
-                                            | + predator(): boolean  |
-                                            | + die()                |
-                                            +-------------------------+
+                                            | + predator(): boolean       |
+                                            | + die()                     |
+                                            +-----------------------------+
