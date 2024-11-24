@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class Board {
     Game game; // Reference to the Game class
-    int numsCoin = 74;
+    int numsCoin = 76;
     int score = 0;
     int step = 0; // for moving the pacman
     int[][] boardArray = {
