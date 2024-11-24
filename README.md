@@ -135,7 +135,7 @@ This binary-based system ensures simplicity and efficient updates during gamepla
                                                       |
                                                       ▼
                                             +-----------------------------+
-                                            |         Figure              |
+                                            |         Figure   (abstarct) |
                                             |-----------------------------|
                                             | Attributes:                 |
                                             | + coordinates: int[]        |
