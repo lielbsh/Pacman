@@ -1,4 +1,4 @@
-# PacMan Project
+# PacMan Project ![Pacman GIF](https://i.gifer.com/T7i.gif)  
 
 This is a Java-based PacMan game project that includes multiple classes representing the game logic, board, PacMan, ghosts, and other essential components. The game allows starting, stopping, and tracking the player's score and remaining lives. This README explains the classes, methods, and attributes used in the project.
 
@@ -47,8 +47,10 @@ This is a Java-based PacMan game project that includes multiple classes represen
   - `nextMove` - Maps PacMan's next move (e.g., `'R'` for Right, `'L'` for Left).
   - `ghost1`, `ghost2`, `ghost3` - Instances of the `Ghost` class.
   - `pacman` - An instance of the `Pacman` class.
-  - Timer object
-  - timeInterval
+  - `eat`
+  - `deleteFromBoard`
+  - `addToBoard`
+  - `updateboard`
 
 ---
 
