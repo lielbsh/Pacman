@@ -12,6 +12,10 @@ The **PacMan Project** is a fully functional PacMan game with an emphasis on cle
 - **Backend**: Built with Java, employing OOP concepts to organize the game logic into modular, reusable classes.  
 - **Frontend**: Developed using React, communicating with the backend via RESTful APIs.  
 
+This project is a collaboration with 
+<a href="https://github.com/assafassa/"> 
+  💁‍♀️ Assaf
+</a>! 🤝✨
 ---
 
 ## 📊 Game Board Design  
